@@ -7,6 +7,9 @@ on:
     branches:
       - main
 
+env:
+  IMAGE_NAME: food-club-client
+
 jobs:
   build:
     if: github.event.pull_request.merged == true
@@ -14,14 +17,14 @@ jobs:
     permissions:
       contents: write
       packages: write
-      id-token: write 
+      id-token: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
-          fetch-depth: '0'
+          fetch-depth: 0
 
       - name: Bump version and push tag
         id: bump_version
@@ -29,10 +32,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_PREFIX: v
+          DEFAULT_BUMP: patch
+          WITH_V: true
+          RELEASE_BRANCHES: main
+          SEMVER: true
 
-      - name: Get new tag
+      - name: Get new tag (sem 'v')
         id: get_tag
-        run: echo "NEW_TAG=$(echo ${{ steps.bump_version.outputs.new_tag }} | sed 's/^v//')" >> $GITHUB_ENV
+        run: echo "NEW_TAG=${{ steps.bump_version.outputs.new_tag }}" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -49,8 +56,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/your-image-name:latest
-            ${{ secrets.DOCKER_USERNAME }}/your-image-name:${{ env.NEW_TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEW_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -67,8 +74,8 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: GitHub Actions Workflow Failure - ${{ github.workflow }}
-          to: your-email@example.com
-          from: your-sender-email@example.com
+          to: foodclubfatec@gmail.com
+          from: foodclubfatec@gmail.com
           body: |
             O workflow "${{ github.workflow }}" falhou no repositório "${{ github.repository }}".
             Branch: ${{ github.ref }}
