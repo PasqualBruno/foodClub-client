@@ -1,35 +1,122 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import {
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
+import { Layout, Menu, theme } from 'antd';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+  Outlet,
+} from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+const { Content, Sider } = Layout;
+
+// Layout padrão com sidebar e outlet para rotas internas
+const AppLayout: React.FC = () => {
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
+  const navigate = useNavigate();
+
+  const menuItems = [
+    {
+      key: '1',
+      icon: <UserOutlined />,
+      label: 'Usuários',
+      path: '/users',
+    },
+    {
+      key: '2',
+      icon: <VideoCameraOutlined />,
+      label: 'Câmeras',
+      path: '/cameras',
+    },
+    {
+      key: '3',
+      icon: <UploadOutlined />,
+      label: 'Uploads',
+      path: '/uploads',
+    },
+  ];
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider breakpoint="lg" collapsedWidth="0">
+        <div className="demo-logo-vertical" />
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          onClick={({ key }) => {
+            const item = menuItems.find((i) => i.key === key);
+            if (item) navigate(item.path);
+          }}
+          items={menuItems}
+        />
+      </Sider>
+      <Layout>
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+            flex: 1,
+          }}
+        >
+          <Outlet />
+        </Content>
+      </Layout>
+    </Layout>
+  );
+};
 
-export default App
+// Página de erro 404 sem layout
+const NotFoundPage = () => (
+  <div
+    style={{
+      height: '100vh',
+      display: 'grid',
+      placeItems: 'center',
+      fontSize: 24,
+    }}
+  >
+    Página não encontrada (404)
+  </div>
+);
+
+// Páginas simuladas
+const Users = () => <div>Usuários</div>;
+const Cameras = () => <div>Câmeras</div>;
+const Uploads = () => <div>Uploads</div>;
+
+// App principal
+const App: React.FC = () => {
+  return (
+    <Router>
+      <Routes>
+        {/* Grupo de rotas com layout */}
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Navigate to="/users" />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/cameras" element={<Cameras />} />
+          <Route path="/uploads" element={<Uploads />} />
+        </Route>
+
+        {/* Página 404 sem layout */}
+        <Route path="/404" element={<NotFoundPage />} />
+
+        {/* Captura qualquer rota inválida e redireciona */}
+        <Route path="*" element={<Navigate to="/404" />} />
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
