@@ -112,6 +112,14 @@ const App: React.FC = () => {
         {/* Página 404 sem layout */}
         <Route path="/404" element={<NotFoundPage />} />
 
+        {/* Rotas não protegidas
+           - Initial page
+           - login
+           - Cadastro
+           - 404
+        */}
+
+
         {/* Captura qualquer rota inválida e redireciona */}
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
