@@ -1,1 +1,1 @@
-minor
+minor 2
