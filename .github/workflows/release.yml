@@ -27,6 +27,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # **Limpar node_modules e cache do npm**
+      - run: |
+          rm -rf node_modules
+          npm cache clean --force
+
       - run: npm ci
 
       - run: npm run build
