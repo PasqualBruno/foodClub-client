@@ -1,4 +1,4 @@
-name: Release
+name: Auto Tag Release
 
 on:
   push:
@@ -6,22 +6,22 @@ on:
       - main
 
 jobs:
-  release:
+  tag:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'node'
+      - name: Setup Git com seu usuário
+        run: |
+          git config user.name "PasqualBruno"
+          git config user.email "pasqualbruno97@gmail.com"
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run semantic-release
+      - name: Criar tag automaticamente
+        uses: anothrNick/github-tag-action@1.67.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: main
+          WITH_V: true
