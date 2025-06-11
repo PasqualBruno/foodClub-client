@@ -1,4 +1,4 @@
-name: Bump version, Build & Push Docker Image, Notify on Failure
+name: Release
 
 on:
   pull_request:
@@ -7,78 +7,24 @@ on:
     branches:
       - main
 
-env:
-  IMAGE_NAME: food-club-client
-
 jobs:
-  build:
+  release:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: write
-      packages: write
-      id-token: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
-          fetch-depth: 0
+        uses: actions/checkout@v3
 
-      - name: Bump version and push tag
-        id: bump_version
-        uses: anothrNick/github-tag-action@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_PREFIX: v
-          DEFAULT_BUMP: patch
-          WITH_V: true
-          RELEASE_BRANCHES: main
-          SEMVER: true
-
-      - name: Get new tag (sem 'v')
-        id: get_tag
-        run: echo "NEW_TAG=${{ steps.bump_version.outputs.new_tag }}" >> $GITHUB_ENV
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEW_TAG }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  notify-on-failure:
-    if: failure()
-    runs-on: ubuntu-22.04
-    needs: build
-    steps:
-      - name: Send failure email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: GitHub Actions Workflow Failure - ${{ github.workflow }}
-          to: foodclubfatec@gmail.com
-          from: foodclubfatec@gmail.com
-          body: |
-            O workflow "${{ github.workflow }}" falhou no repositório "${{ github.repository }}".
-            Branch: ${{ github.ref }}
-            Commit: ${{ github.sha }}
-            Link do Workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            Por favor, verifique os logs para mais detalhes.
+        run: npx semantic-release
