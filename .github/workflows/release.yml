@@ -10,6 +10,8 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,15 +29,36 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # **Limpar node_modules e cache do npm**
       - run: |
           rm -rf node_modules
           npm cache clean --force
 
       - run: npm ci
-
       - run: npm run build
 
-      - run: npx semantic-release
+      - name: Run semantic-release
+        id: semantic
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get latest tag (version)
+        id: get_version
+        run: |
+          echo "version=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
+  docker:
+    needs: release
+    runs-on: ubuntu-latest
+    if: ${{ needs.release.outputs.version != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/food-club-client:${{ needs.release.outputs.version }} .
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/food-club-client:${{ needs.release.outputs.version }}
