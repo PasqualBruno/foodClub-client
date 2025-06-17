@@ -6,7 +6,6 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import {
-  //
   BrowserRouter as Router,
   Routes,
   Route,
@@ -14,6 +13,7 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom';
+import SingUp from './Pages/NotProtected/SignUp/SingUp';
 
 const { Content, Sider } = Layout;
 
@@ -104,7 +104,6 @@ const App: React.FC = () => {
       <Routes>
         {/* Grupo de rotas com layout */}
         <Route element={<AppLayout />}>
-          <Route path="/" element={<Navigate to="/users" />} />
           <Route path="/users" element={<Users />} />
           <Route path="/cameras" element={<Cameras />} />
           <Route path="/uploads" element={<Uploads />} />
@@ -119,6 +118,7 @@ const App: React.FC = () => {
            - Cadastro
            - 404
         */}
+        <Route path='/signup' element={<SingUp />} />
 
 
         {/* Captura qualquer rota inválida e redireciona */}
