@@ -10,11 +10,6 @@ const App = () => {
   const { company } = useCompanyStore();
 
 
-  console.log({ restaurant })
-  console.log({ employee })
-  console.log({ company })
-
-
   return (
     <div>App</div>
   )

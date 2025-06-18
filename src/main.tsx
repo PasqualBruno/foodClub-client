@@ -10,6 +10,7 @@ import AuthLayout from './shared/Pages/NotProtected/AuthLayout/AuthLayout.tsx'
 import Login from './shared/Pages/NotProtected/Login/Login.tsx'
 import PageNotFound from './shared/Pages/NotProtected/NotFound/NotFound.tsx'
 import SignUp from './shared/Pages/NotProtected/SignUp/SignUp.tsx'
+import InitialPage from './shared/Pages/NotProtected/InitialPage/InitialPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -29,7 +30,7 @@ createRoot(document.getElementById('root')!).render(
           {/* Rotas protegidas */}
           <Route element={<RequireAuth />}>
             <Route element={<AppLayout />}>
-              <Route path="/inicio" element={<App />} />
+              <Route path="/inicio" element={<InitialPage />} />
               <Route path="/pratos" element={<App />} />
               <Route path="/pedidos" element={<App />} />
             </Route>
