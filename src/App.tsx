@@ -13,7 +13,7 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom';
-import SingUp from './Pages/NotProtected/SignUp/SingUp';
+import SingUp from './Pages/NotProtected/SignUp/SignUp';
 
 const { Content, Sider } = Layout;
 
