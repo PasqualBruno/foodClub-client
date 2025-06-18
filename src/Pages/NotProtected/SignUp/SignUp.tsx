@@ -7,14 +7,15 @@ import StepFive from "./components/Steps/StepFive/StepFive";
 import signupImage from "../../../assets/SignUp/girl-background.svg";
 import "./SignUp.scss";
 import { useState } from "react";
-import type { ISignUp } from "./ISignUp";
+import type { ISignUp } from "./interfaces/Signup";
 
 export default function SignUp() {
   const [currentStep, setCurrentStep] = useState(1); // controle do step
   const [formData, setFormData] = useState<ISignUp>({
-    userType: "",
-    password: "",
+    userType: "company",
     email: "",
+    password: "",
+    confirmPassword: "",
     name: "",
     cnpj: "",
     cep: "",
@@ -23,8 +24,9 @@ export default function SignUp() {
     state: "",
     complement: "",
     number: "",
-    image: ""
+    image: "",
   });
+
 
   const isLastStep = currentStep === 5;
 
@@ -37,13 +39,15 @@ export default function SignUp() {
     "Logo",
     "Finalização",
   ]
+
+  console.log(formData)
   
   return (
     <div className="signup-container">
       
       {/* Lado esquerdo - Formulário (1/3) */}
       <Form className="signup-form"
-      initialValues={{ userType: formData.userType || "company" }}
+      initialValues={{ formData }}
       onValuesChange={(_, allValues) => {
         setFormData((prev) => ({ ...prev, ...allValues }));
       }}
@@ -57,8 +61,8 @@ export default function SignUp() {
 
             let content;
             if (id === '1') content = <StepOne formData={formData}/>;
-            else if (id === '2') content = <StepTwo formData={formData} setFormData={setFormData} />;
-            else if (id === '3') content = <StepThree />;
+            else if (id === '2') content = <StepTwo formData={formData} />;
+            else if (id === '3') content = <StepThree formData={formData} />;
             else if (id === '4') content = <StepFour />;
             else content = <StepFive />;
 

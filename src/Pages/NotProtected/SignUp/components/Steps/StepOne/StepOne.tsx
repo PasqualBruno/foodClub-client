@@ -3,9 +3,9 @@ import empresaIcon from '../../../../../../assets/SignUp/icons/empresa.svg';
 import restauranteIcon from '../../../../../../assets/SignUp/icons/restaurante.svg';
 import './StepOne.scss';
 import TextContainer from "../../TextContainer/TextContainer";
-import type { IStepOneProps } from "../../../ISignUp";
+import type { IStepProps } from "../../../interfaces/Signup";
 
-export default function StepOne({ formData }: IStepOneProps) {
+export default function StepOne({ formData }: IStepProps) {
   const value = formData.userType || "company";
 
   return (

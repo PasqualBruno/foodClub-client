@@ -1,8 +1,8 @@
 import { Form, Input } from "antd";
 import TextContainer from "../../TextContainer/TextContainer";
-import type { IProps } from "../../../ISignUp";
+import type { IStepProps } from "../../../interfaces/Signup";
 
-export default function StepTwo({ formData, } : IProps) {
+export default function StepTwo({ formData, } : IStepProps) {
   const userType = formData.userType || 'company'; // Default to "Empresa" if not set
 
   return (

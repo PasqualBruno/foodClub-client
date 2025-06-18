@@ -1,10 +1,18 @@
 import { Form } from "antd";
+import TextContainer from "../../TextContainer/TextContainer";
+import type { IStepProps } from "../../../interfaces/Signup";
 
-export default function StepThree () {
+export default function StepThree ({ formData }: IStepProps) {
+  const userType = formData.userType || 'company';
+
+  const subtitle = `Informações ${userType === 'restaurant' ? 'do restaurante' : 'da empresa'}`;
+
   return (
     <Form.Item>
-      <h1>Step Three</h1>
-      <p>This is the third step of the sign-up process.</p>
+      <TextContainer
+        title={userType === "restaurant" ? "Restaurante" : "Empresa"}
+        subtitle={subtitle}
+      />
       {/* Add your form or content here */}
     </Form.Item>
   );
