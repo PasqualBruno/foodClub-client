@@ -1,0 +1,92 @@
+.signup-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+
+  .signup-form {
+    flex: 1;
+    padding: 40px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+
+    .signup-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+
+      .back-button{
+        background: #f0f0f0;
+        &:hover {
+          background: #7D0000;
+          color: #fff;
+          border-color: #7D0000;
+        }
+      }
+      .signup-button{
+        background: #7D0000;
+        color: #fff;
+        &:hover {
+          background: #f0f0f0;
+          color: #7D0000;
+          border-color: #7D0000;
+        }
+      }
+    }
+
+    .ant-tabs {
+      .ant-tabs-tab-btn {
+        color: #302F2F;
+
+        &:hover {
+          color: #7D0000;
+        }
+      }
+      .ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+          color: #7D0000;
+
+          &:hover {
+            color: #7D0000;
+          }
+        }
+      }
+      .ant-tabs-ink-bar {
+        background-color: #7D0000;
+      }
+    }
+
+  }
+
+  .progress-buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .signup-image {
+    flex: 2;
+    background: #f9f4f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 90%;
+      height: 80vh;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .signup-image {
+      display: none;
+    }
+
+    .signup-form {
+      flex: none;
+      width: 100%;
+      padding: 24px;
+    }
+  }
+}
