@@ -11,7 +11,7 @@ export interface ISignUp {
   state: string;
   complement?: string;
   number?: string;
-  image?: string; // Pode ser base64 ou URL local
+  image?: string; // Não sei ainda
 }
 
 export interface IStepProps {
