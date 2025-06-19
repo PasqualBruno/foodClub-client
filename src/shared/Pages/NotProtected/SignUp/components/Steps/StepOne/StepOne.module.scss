@@ -1,17 +1,14 @@
-.radio-card-group {
+.radioCardGroup {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
 }
-
-.ant-radio-wrapper {
-  .ant-radio {
-    display: none;
-  }
+.hiddenRadio {
+  display: none;
 }
 
-.radio-card {
+.radioCard {
   border: 2px solid #d9d9d9;
   border-radius: 12px;
   padding: 1rem;
@@ -21,6 +18,7 @@
   transition: all 0.3s ease;
   align-items: center;
   justify-content: center;
+  user-select: none;
 
   &.active {
     border-color: #7D0000;

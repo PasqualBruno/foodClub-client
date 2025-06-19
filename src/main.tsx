@@ -9,8 +9,8 @@ import RequireAuth from './routes/RequireAuth.tsx'
 import AuthLayout from './shared/Pages/NotProtected/AuthLayout/AuthLayout.tsx'
 import Login from './shared/Pages/NotProtected/Login/Login.tsx'
 import PageNotFound from './shared/Pages/NotProtected/NotFound/NotFound.tsx'
-import SignUp from './shared/Pages/NotProtected/SignUp/SignUp.tsx'
 import InitialPage from './shared/Pages/NotProtected/InitialPage/InitialPage.tsx'
+import SignUp from './shared/Pages/NotProtected/SignUp/SignUp.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,38 +1,14 @@
-.signup-container {
+.signupContainer {
   display: flex;
   min-height: 100vh;
   flex-direction: row;
 
-  .signup-form {
+  .signupForm {
     flex: 1;
     padding: 40px;
     background: #fff;
     display: flex;
     flex-direction: column;
-
-    .signup-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-
-      .back-button{
-        background: #f0f0f0;
-        &:hover {
-          background: #7D0000;
-          color: #fff;
-          border-color: #7D0000;
-        }
-      }
-      .signup-button{
-        background: #7D0000;
-        color: #fff;
-        &:hover {
-          background: #f0f0f0;
-          color: #7D0000;
-          border-color: #7D0000;
-        }
-      }
-    }
 
     .ant-tabs {
       .ant-tabs-tab-btn {
@@ -42,6 +18,7 @@
           color: #7D0000;
         }
       }
+
       .ant-tabs-tab-active {
         .ant-tabs-tab-btn {
           color: #7D0000;
@@ -51,21 +28,48 @@
           }
         }
       }
+
       .ant-tabs-ink-bar {
         background-color: #7D0000;
       }
     }
 
+    .signupButtons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+
+      .backButton {
+        background: #f0f0f0;
+
+        &:hover {
+          background: #7D0000;
+          color: #fff;
+          border-color: #7D0000;
+        }
+      }
+
+      .signupButton {
+        background: #7D0000;
+        color: #fff;
+
+        &:hover {
+          background: #f0f0f0;
+          color: #7D0000;
+          border-color: #7D0000;
+        }
+      }
+    }
   }
 
-  .progress-buttons-container {
+  .progressButtonsContainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     height: 100%;
   }
 
-  .signup-image {
+  .signupImage {
     flex: 2;
     background: #f9f4f1;
     display: flex;

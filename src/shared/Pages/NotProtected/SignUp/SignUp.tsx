@@ -1,98 +1,120 @@
-import React from 'react'
-import { App, Button, Card, Form, Input, Select } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import authRepository from '../../../repositories/auth/authRepository' // ajuste o caminho se necessário
+import { Button, Flex, Form, Progress, Tabs } from "antd";
+import StepOne from "./components/Steps/StepOne/StepOne";
+import StepTwo from "./components/Steps/StepTwo/StepTwo";
+import StepThree from "./components/Steps/StepThree/StepThree";
+import StepFour from "./components/Steps/StepFour/StepFour";
+import StepFive from "./components/Steps/StepFive/StepFive";
+import signupImage from "../../../../assets/SignUp/girl-background.svg";
+import styles from "./SignUp.module.scss";
+import { useState } from "react";
+import type { ISignUp } from "./interfaces/Signup";
 
-const { Option } = Select
+export default function SignUp() {
+  const [currentStep, setCurrentStep] = useState(1); // controle do step
+  const [formData, setFormData] = useState<ISignUp>({
+    userType: "company",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
+    cnpj: "",
+    cep: "",
+    street: "",
+    city: "",
+    state: "",
+    complement: "",
+    number: "",
+    image: "",
+  });
 
-const SignUp = () => {
-  const { message } = App.useApp()
-  const navigate = useNavigate()
 
-  const onFinish = async (values: { userType: string; email: string; password: string }) => {
-    try {
-      const response = await authRepository.register(values)
-      console.log(response)
-      if (response.status === 201) {
-        message.success('Cadastro realizado com sucesso!')
-        navigate('/entrar')
-      }
-    } catch (error: any) {
-      message.error('Erro ao cadastrar: ' + error.response?.data?.message || error.message)
-    }
-  }
+  const isLastStep = currentStep === 5;
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
+  const progress = Math.round((currentStep / 5) * 100);
 
+  const label = [
+    "Tipo",
+    "Conta",
+    "Dados",
+    "Logo",
+    "Finalização",
+  ]
+
+  console.log(formData)
+  
   return (
-    <div style={styles.container}>
-      <Card title="Cadastro" style={styles.card}>
-        <Form
-          name="signup"
-          layout="vertical"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            name="userType"
-            label="Tipo de Usuário"
-            rules={[{ required: true, message: 'Por favor, selecione o tipo de usuário!' }]}
-          >
-            <Select placeholder="Selecione o tipo">
-              <Option value="company">Empresa</Option>
-              <Option value="restaurant">Restaurante</Option>
-              <Option value="employee">Funcionário</Option>
-            </Select>
-          </Form.Item>
+    <div className={styles.signupContainer}>
+      
+      {/* Lado esquerdo - Formulário (1/3) */}
+      <Form className={styles.signupForm}
+      initialValues={{ formData }}
+      onValuesChange={(_, allValues) => {
+        setFormData((prev) => ({ ...prev, ...allValues }));
+      }}
+      >
+        <Tabs
+          activeKey= {String(currentStep)}
+          onChange={(key) => setCurrentStep(Number(key))}
+          centered
+          items={Array.from({ length: 5 }).map((_, i) => {
+            const id = String(i + 1);
 
-          <Form.Item
-            name="email"
-            label="E-mail"
-            rules={[
-              { required: true, message: 'Por favor, insira seu e-mail!' },
-              { type: 'email', message: 'E-mail inválido!' },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+            let content;
+            if (id === '1') content = <StepOne formData={formData}/>;
+            else if (id === '2') content = <StepTwo formData={formData} />;
+            else if (id === '3') content = <StepThree formData={formData} />;
+            else if (id === '4') content = <StepFour />;
+            else content = <StepFive />;
 
-          <Form.Item
-            name="password"
-            label="Senha"
-            rules={[{ required: true, message: 'Por favor, insira sua senha!' }]}
+            return {
+              label: `${label[i]}`,
+              key: id,
+              children: content,
+            };
+          })}
+        />
+        <Flex className={styles.progressButtonsContainer} gap="small" vertical>
+          <div  className= {styles.signupButtons} >
+            {currentStep > 1 && (
+              <Button
+                type="default"
+                className={styles.backButton}
+                onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 1))}
+              >
+                Voltar
+              </Button>
+            )}
+            
+            
+          <Button
+            type="primary"
+            className={styles.signupButton}
+            onClick={!isLastStep ? () => setCurrentStep((prev) => Math.min(prev + 1, 5)) : undefined}
+            htmlType={isLastStep ? "submit" : undefined}
           >
-            <Input.Password />
-          </Form.Item>
+            {isLastStep ? "Finalizar" : "Próximo"}
+          </Button>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              Cadastrar
-            </Button>
-          </Form.Item>
-          <Form.Item>
-            <Button type='dashed' onClick={() => navigate('/entrar')} block>
-              Entrar
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
-    </div >
-  )
+            
+          </div>
+
+          <Progress 
+            strokeColor="#7D0000"
+            percent= {progress} 
+            showInfo={false} 
+          />
+            
+        </Flex>
+      </Form>
+
+      {/* Lado direito - Imagem (2/3) */}
+      <div className={styles.signupImage}>
+        <img
+          src={signupImage}
+          alt="Imagem de Cadastro"
+        />
+      </div>
+
+    </div>
+  );
 }
-
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f2f5',
-  },
-  card: {
-    width: 400,
-  },
-}
-
-export default SignUp
