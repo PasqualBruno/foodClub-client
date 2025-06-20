@@ -53,6 +53,7 @@ export default function SignUp() {
       }}
       >
         <Tabs
+          className={styles.signupTabs}
           activeKey= {String(currentStep)}
           onChange={(key) => setCurrentStep(Number(key))}
           centered
