@@ -5,4 +5,26 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
+
+}
+
+body {}
+
+
+.ant-table-tbody>tr:nth-child(odd)>td {
+  background-color: #fafafa;
+}
+
+
+.ant-table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+
+.custom-table .ant-table-thead>tr>th {
+  background-color: #a8071a !important;
+  color: #fff !important;
+  font-weight: 600;
+  border: none;
 }

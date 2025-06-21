@@ -3,7 +3,7 @@ import { useRestaurantStore } from "@/Entities/Restaurant/store/RestaurantStore"
 import { useEffect } from "react"
 import Title from "antd/es/typography/Title"
 import RestaurantCard from "./components/RestaurantCard/RestaurantCard"
-import { App } from "antd"
+import { App, Card } from "antd"
 import styles from './InitialPage.module.scss'
 import RestaurantCardLoading from "./components/RestaurantCard/RestaurantCardLoading"
 
@@ -25,17 +25,19 @@ const InitialPage = () => {
 
   return (
     <div>
-      <Title level={4}  >Restaurantes</Title>
-      <div className={styles.restaurantes_container}>
-        {loading
-          ? Array(3).fill(null).map((_, index) => (
-            <RestaurantCardLoading key={index} />
-          ))
-          : restaurants.map((restaurant) => (
-            <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-          ))
-        }
-      </div>
+      <h1 >Restaurantes</h1>
+      <Card style={{ border: 'none' }}>
+        <div className={styles.restaurantes_container}>
+          {loading
+            ? Array(3).fill(null).map((_, index) => (
+              <RestaurantCardLoading key={index} />
+            ))
+            : restaurants.map((restaurant) => (
+              <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+            ))
+          }
+        </div>
+      </Card>
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import type { IEmployeeBasicInfo } from "../interfaces/employeeInterfaces";
+import type { IEmployee } from "../interfaces/employeeInterfaces";
 
 interface IEmployeeStore {
-  employee: IEmployeeBasicInfo | null;
-  setEmployee: (employee: IEmployeeBasicInfo) => void;
+  employee: IEmployee | null;
+  setEmployee: (employee: IEmployee) => void;
 }
 
 export const useEmployeeStore = create<IEmployeeStore>((set) => ({
