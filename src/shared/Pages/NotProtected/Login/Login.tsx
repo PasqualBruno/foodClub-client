@@ -7,21 +7,24 @@ import { useCompanyStore } from '@/Entities/Company/store/CompanyStore'
 import { useEmployeeStore } from '@/Entities/Employee/store/EmployeeStore'
 import { UserType, type IUser } from '../../../interfaces/sharedInterfaces'
 import { useAuthStore } from '@/shared/store/AuthStore'
+import type { IRestaurantBasicInfo } from '@/Entities/Restaurant/interfaces/RestaurantInterfaces'
+import type { ICompany } from '@/Entities/Company/interfaces/CompanyInterfaces'
+import type { IEmployee } from '@/Entities/Employee/interfaces/employeeInterfaces'
 
 const Login = () => {
   const { message } = App.useApp()
   const navigate = useNavigate()
   const { setRestaurant } = useRestaurantStore()
   const { setEmployee } = useEmployeeStore()
-  const { getCompany, company } = useCompanyStore()
+  const { setCompany } = useCompanyStore()
   const { updateUser } = useAuthStore()
-
-  console.log({ company })
 
   const onFinish = async (values: { email: string; password: string }) => {
     try {
       const response = await authRepository.login(values.email, values.password)
       const userData = response.userDetails
+
+      console.log(userData)
 
       const user: IUser = {
         userType: userData.userType,
@@ -39,9 +42,14 @@ const Login = () => {
 
 
       if (user.id) {
-        if (user.userType === UserType.Restaurant) setRestaurant(userData)
-        if (user.userType === UserType.Company) getCompany(user.id)
-        if (user.userType === UserType.Employee) setEmployee(userData)
+        setRestaurant({} as IRestaurantBasicInfo)
+        setCompany({} as ICompany)
+        setEmployee({} as IEmployee)
+
+
+        if (user.userType === UserType.Restaurant) setRestaurant(userData.restaurant)
+        if (user.userType === UserType.Company) setCompany(userData.company)
+        if (user.userType === UserType.Employee) setEmployee(userData.employee)
       }
 
       updateUser(user)

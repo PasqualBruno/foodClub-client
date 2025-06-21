@@ -1,18 +1,12 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import { App as AntdApp, ConfigProvider } from 'antd'
-import ptBR from 'antd/locale/pt_BR'
+// src/main.tsx
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+import { App as AntdApp, ConfigProvider } from 'antd';
+import ptBR from 'antd/locale/pt_BR';
 
-import App from './App.tsx'
-import AppLayout from './components/AppLayout/AppLayout.tsx'
-import RequireAuth from './routes/RequireAuth.tsx'
-import AuthLayout from './shared/Pages/NotProtected/AuthLayout/AuthLayout.tsx'
-import Login from './shared/Pages/NotProtected/Login/Login.tsx'
-import PageNotFound from './shared/Pages/NotProtected/NotFound/NotFound.tsx'
-import SignUp from './shared/Pages/NotProtected/SignUp/SignUp.tsx'
-import InitialPage from './shared/Pages/NotProtected/InitialPage/InitialPage.tsx'
+import AppRoutes from './routes/AppRoutes';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -46,36 +40,16 @@ createRoot(document.getElementById('root')!).render(
             hoverBorderColor: '#a8071a',
           },
           Card: {
-            paddingSM: 8
-          }
+            paddingSM: 8,
+          },
         },
       }}
-
     >
       <BrowserRouter>
         <AntdApp>
-          <Routes>
-            {/* Redireciona raiz "/" para "/entrar" */}
-            <Route path="/" element={<Navigate to="/entrar" replace />} />
-
-            {/* Rotas públicas */}
-            <Route element={<AuthLayout />}>
-              <Route path="/entrar" element={<Login />} />
-              <Route path="/registrar" element={<SignUp />} />
-              <Route path="*" element={<PageNotFound />} />
-            </Route>
-
-            {/* Rotas protegidas */}
-            <Route element={<RequireAuth />}>
-              <Route element={<AppLayout />}>
-                <Route path="/inicio" element={<InitialPage />} />
-                <Route path="/pratos" element={<App />} />
-                <Route path="/pedidos" element={<App />} />
-              </Route>
-            </Route>
-          </Routes>
+          <AppRoutes /> {/* Aqui você renderiza as rotas separadas */}
         </AntdApp>
       </BrowserRouter>
     </ConfigProvider>
   </StrictMode>
-)
+);

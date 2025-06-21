@@ -2,19 +2,31 @@ import { BowlSteamIcon, HouseIcon, ListBulletsIcon, SignOutIcon } from '@phospho
 import { Layout, Menu } from 'antd'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { useRestaurantStore } from '@/Entities/Restaurant/store/RestaurantStore'
 
 const { Sider, Content } = Layout
 
 const AppLayout = () => {
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState(false)
+  const { restaurant } = useRestaurantStore()
+
+  const menuItems = [
+    { key: '/inicio', label: 'Início', icon: <HouseIcon size={24} /> },
+    restaurant?.name && {
+      key: '/pratos',
+      label: 'Pratos',
+      icon: <BowlSteamIcon size={24} />,
+    },
+    { key: '/pedidos', label: 'Pedidos', icon: <ListBulletsIcon size={24} /> },
+  ].filter(Boolean)
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider
         theme="light"
-        breakpoint="md" // 🔥 quebra para colapsar
-        collapsedWidth={0} // 🔥 some totalmente em telas pequenas
+        breakpoint="md"
+        collapsedWidth={0}
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
@@ -31,11 +43,7 @@ const AppLayout = () => {
             style={{ borderRight: 'none' }}
             theme="light"
             onClick={({ key }) => navigate(key)}
-            items={[
-              { key: '/inicio', label: 'Início', icon: <HouseIcon size={24} /> },
-              { key: '/pratos', label: 'Pratos', icon: <BowlSteamIcon size={24} /> },
-              { key: '/pedidos', label: 'Pedidos', icon: <ListBulletsIcon size={24} /> },
-            ]}
+            items={menuItems}
           />
         </div>
 
