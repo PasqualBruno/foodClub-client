@@ -7,6 +7,8 @@ import {
   ListBulletsIcon,
   SignOutIcon,
   Users,
+  UsersThree,
+  UsersThreeIcon,
 } from '@phosphor-icons/react'
 import { Image, Layout, Menu } from 'antd'
 import { Outlet, useNavigate } from 'react-router-dom'
@@ -25,12 +27,19 @@ const AppLayout = () => {
   const { restaurant } = useRestaurantStore()
   const { user } = useAuthStore()
 
+
+
   const menuItems = [
     { key: '/inicio', label: 'Início', icon: <HouseIcon size={24} /> },
     restaurant?.name && {
       key: '/pratos',
       label: 'Pratos',
       icon: <BowlSteamIcon size={24} />,
+    },
+    user?.userType === UserType.Company && {
+      key: '/funcionarios',
+      label: 'Funcionários',
+      icon: <UsersThreeIcon size={24} />,
     },
     { key: '/pedidos', label: 'Pedidos', icon: <ListBulletsIcon size={24} /> },
   ].filter(Boolean)

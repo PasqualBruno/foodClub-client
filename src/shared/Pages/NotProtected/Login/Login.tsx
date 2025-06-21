@@ -24,8 +24,6 @@ const Login = () => {
       const response = await authRepository.login(values.email, values.password)
       const userData = response.userDetails
 
-      console.log(userData)
-
       const user: IUser = {
         userType: userData.userType,
         id:
