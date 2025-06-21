@@ -1,30 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+/* Fontes e reset */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
-
 }
 
-body {}
-
-
+/* Zebra */
 .ant-table-tbody>tr:nth-child(odd)>td {
   background-color: #fafafa;
 }
 
-
+/* Bordas arredondadas + sombra */
 .ant-table {
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-
+/* Estilização do cabeçalho */
 .custom-table .ant-table-thead>tr>th {
   background-color: #a8071a !important;
-  color: #fff !important;
+  /* Vermelho primário */
+  color: #ffffff !important;
   font-weight: 600;
+  text-transform: uppercase;
   border: none;
+  font-size: 14px;
+}
+
+/* Títulos do modal */
+.ant-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Espaçamento interno nas células */
+.ant-table-cell {
+  padding: 12px;
+}
+
+/* Tag centralizada */
+.ant-tag {
+  display: inline-block;
+  text-align: center;
+}
+
+.employee-order-concluido {
+  opacity: 0.5;
 }

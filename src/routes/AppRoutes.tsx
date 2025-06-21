@@ -1,4 +1,3 @@
-// src/routes/AppRoutes.tsx
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout/AppLayout';
 import RequireAuth from './RequireAuth';
@@ -7,13 +6,15 @@ import Login from '@/shared/Pages/NotProtected/Login/Login';
 import PageNotFound from '@/shared/Pages/NotProtected/NotFound/NotFound';
 import SignUp from '@/shared/Pages/NotProtected/SignUp/SignUp';
 import InitialPage from '@/shared/Pages/NotProtected/InitialPage/InitialPage';
-import App from '@/App';
 import { useRestaurantStore } from '@/Entities/Restaurant/store/RestaurantStore';
 import RestaurantDishes from '@/Entities/Restaurant/pages/dishes/RestaurantDishes';
+import { useAuthStore } from '@/shared/store/AuthStore';
+import RestaurantOrders from '@/Entities/Restaurant/pages/orders/RestaurantOrders';
 
 const AppRoutes = () => {
 
   const { restaurant } = useRestaurantStore()
+  const { user } = useAuthStore()
 
   return (
     <Routes>
@@ -32,7 +33,7 @@ const AppRoutes = () => {
         <Route element={<AppLayout />}>
           <Route path="/inicio" element={<InitialPage />} />
           {restaurant?.name && <Route path="/pratos" element={<RestaurantDishes />} />}
-          <Route path="/pedidos" element={<App />} />
+          <Route path="/pedidos" element={user.userType === 'company' ? <InitialPage /> : <RestaurantOrders />} />
         </Route>
       </Route>
     </Routes>
