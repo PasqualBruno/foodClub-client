@@ -1,4 +1,5 @@
-import { Button, Flex, Form, Progress, Tabs } from "antd";
+import { Button, Flex, Form, Progress, Tabs, message } from "antd";
+import { useState } from "react";
 import StepOne from "./components/Steps/StepOne/StepOne";
 import StepTwo from "./components/Steps/StepTwo/StepTwo";
 import StepThree from "./components/Steps/StepThree/StepThree";
@@ -6,116 +7,155 @@ import StepFour from "./components/Steps/StepFour/StepFour";
 import StepFive from "./components/Steps/StepFive/StepFive";
 import signupImage from "../../../../assets/SignUp/girl-background.svg";
 import styles from "./SignUp.module.scss";
-import { useState } from "react";
-import type { ISignUp } from "./interfaces/Signup";
+import type { RegisterPayload } from "./interfaces/Signup";
+import { useSignUp } from "./hooks/useSignUp";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function SignUp() {
-  const [currentStep, setCurrentStep] = useState(1); // controle do step
-  const [formData, setFormData] = useState<ISignUp>({
+  const navigate = useNavigate();
+
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const [formData, setFormData] = useState<RegisterPayload>({
     userType: "company",
+    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    name: "",
     cnpj: "",
-    cep: "",
-    street: "",
-    city: "",
-    state: "",
-    complement: "",
-    number: "",
-    image: "",
+    profileImage: "",
+    company: {
+      name: "",
+      cep: "",
+      number: "",
+    },
   });
 
-
+  const { register, isLoading } = useSignUp();
   const isLastStep = currentStep === 5;
-
   const progress = Math.round((currentStep / 5) * 100);
+  const labels = ["Tipo", "Conta", "Dados", "Logo", "Finalização"];
 
-  const label = [
-    "Tipo",
-    "Conta",
-    "Dados",
-    "Logo",
-    "Finalização",
-  ]
+  const handleValuesChange = (_: any, allValues: any) => {
+    const { userType, name, email, password, cnpj, cep, number } = allValues;
+    const entity = { name, cep, number };
+    const profileImage = formData.profileImage || "";
 
-  console.log(formData)
-  
+    const payload: RegisterPayload =
+      userType === "restaurant"
+        ? {
+            userType,
+            name,
+            email,
+            password,
+            cnpj,
+            profileImage,
+            restaurant: entity,
+          }
+        : {
+            userType,
+            name,
+            email,
+            password,
+            cnpj,
+            profileImage,
+            company: entity,
+          };
+
+    setFormData(payload);
+  };
+
+  const handleImageChange = (image: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      profileImage: image,
+    }));
+  };
+
+  const handleFinish = async () => {
+    try {
+      await register(formData);
+      message.success("Cadastro realizado com sucesso!");
+      navigate('/entrar')
+    } catch {
+      message.error("Erro ao cadastrar. Verifique os dados.");
+    }
+  };
+
   return (
     <div className={styles.signupContainer}>
-      
-      {/* Lado esquerdo - Formulário (1/3) */}
-      <Form className={styles.signupForm}
-      initialValues={{ formData }}
-      onValuesChange={(_, allValues) => {
-        setFormData((prev) => ({ ...prev, ...allValues }));
-      }}
+      <Form
+        className={styles.signupForm}
+        initialValues={{ userType: "company" }}
+        onValuesChange={handleValuesChange}
       >
         <Tabs
           className={styles.signupTabs}
-          activeKey= {String(currentStep)}
+          activeKey={String(currentStep)}
           onChange={(key) => setCurrentStep(Number(key))}
           centered
           items={Array.from({ length: 5 }).map((_, i) => {
             const id = String(i + 1);
+            const stepProps = { formData };
 
-            let content;
-            if (id === '1') content = <StepOne formData={formData}/>;
-            else if (id === '2') content = <StepTwo formData={formData} />;
-            else if (id === '3') content = <StepThree formData={formData} />;
-            else if (id === '4') content = <StepFour />;
-            else content = <StepFive />;
+            const content =
+              id === "1" ? (
+                <StepOne {...stepProps} />
+              ) : id === "2" ? (
+                <StepTwo {...stepProps} />
+              ) : id === "3" ? (
+                <StepThree {...stepProps} />
+              ) : id === "4" ? (
+                <StepFour {...stepProps} onImageChange={handleImageChange} />
+              ) : (
+                <StepFive {...stepProps} />
+              );
 
-            return {
-              label: `${label[i]}`,
-              key: id,
-              children: content,
-            };
+            return { label: labels[i], key: id, children: content };
           })}
         />
+
         <Flex className={styles.progressButtonsContainer} gap="small" vertical>
-          <div  className= {styles.signupButtons} >
+          <div className={styles.signupButtons}>
             {currentStep > 1 && (
               <Button
                 type="default"
                 className={styles.backButton}
-                onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 1))}
+                onClick={() =>
+                  setCurrentStep((prev) => Math.max(prev - 1, 1))
+                }
               >
                 Voltar
               </Button>
             )}
-            
-            
-          <Button
-            type="primary"
-            className={styles.signupButton}
-            onClick={!isLastStep ? () => setCurrentStep((prev) => Math.min(prev + 1, 5)) : undefined}
-            htmlType={isLastStep ? "submit" : undefined}
-          >
-            {isLastStep ? "Finalizar" : "Próximo"}
-          </Button>
 
-            
+            <Button
+              type="primary"
+              className={styles.signupButton}
+              loading={isLoading}
+              htmlType="button"
+              onClick={
+                isLastStep
+                  ? handleFinish
+                  : () => setCurrentStep((prev) => Math.min(prev + 1, 5))
+              }
+            >
+              {isLastStep ? "Finalizar" : "Próximo"}
+            </Button>
           </div>
 
-          <Progress 
+          <Progress
             strokeColor="#7D0000"
-            percent= {progress} 
-            showInfo={false} 
+            percent={progress}
+            showInfo={false}
           />
-            
         </Flex>
       </Form>
 
-      {/* Lado direito - Imagem (2/3) */}
       <div className={styles.signupImage}>
-        <img
-          src={signupImage}
-          alt="Imagem de Cadastro"
-        />
+        <img src={signupImage} alt="Imagem de Cadastro" />
       </div>
-
     </div>
   );
 }
