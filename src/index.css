@@ -51,3 +51,40 @@
 .employee-order-concluido {
   opacity: 0.5;
 }
+
+.menu {
+  background-color: #a8071a;
+
+  .ant-menu-item,
+  .ant-menu-submenu-title {
+    color: white !important;
+    font-weight: 600;
+  }
+
+  .ant-menu-title-content {
+    color: white !important;
+    font-weight: 600;
+  }
+
+  .ant-menu-item-icon {
+    color: white !important;
+  }
+
+  .ant-menu-item-selected {
+    background-color: #871010 !important;
+    color: white !important;
+
+    .ant-menu-title-content {
+      color: white !important;
+    }
+  }
+
+  .ant-menu-item:hover {
+    background-color: #871010 !important;
+    color: white !important;
+
+    .ant-menu-title-content {
+      color: white !important;
+    }
+  }
+}
