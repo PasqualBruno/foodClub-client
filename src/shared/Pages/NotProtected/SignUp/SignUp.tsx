@@ -12,7 +12,6 @@ const SignUp = () => {
   const onFinish = async (values: { userType: string; email: string; password: string }) => {
     try {
       const response = await authRepository.register(values)
-      console.log(response)
       if (response.status === 201) {
         message.success('Cadastro realizado com sucesso!')
         navigate('/entrar')

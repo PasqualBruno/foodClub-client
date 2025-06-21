@@ -1,30 +1,32 @@
 import { create } from "zustand"
-import type { IDish, IRestaurant, IRestaurantBasicInfo } from "../interfaces/RestaurantInterfaces"
+import type { IRestaurant, IRestaurantBasicInfo } from "../interfaces/RestaurantInterfaces"
 import restaurantRepository from "../repository/restaurantRepository"
 
 interface IRestaurantStore {
   restaurant: IRestaurantBasicInfo | null
-  dishes: IDish[]
+  loading: boolean
   restaurants: IRestaurant[]
   setRestaurant: (restaurant: IRestaurantBasicInfo) => void
   loadRestaurantInfo: () => void
   getRestaurants: () => void
+
 }
 
 export const useRestaurantStore = create<IRestaurantStore>((set) => ({
+  loading: false,
   restaurant: null,
-  dishes: [],
   restaurants: [],
   setRestaurant: (restaurant) => set({ restaurant }),
   loadRestaurantInfo: () => {
   },
   getRestaurants: async () => {
     try {
+      set({ loading: true })
       const data = await restaurantRepository.getRestaurants()
-      console.log(data)
-      set({ restaurants: data })
+      set({ restaurants: data, loading: false })
     } catch (error) {
-      console.error("Erro ao buscar restaurantes:", error)
+      set({ loading: false })
+      throw error
     }
   },
 }))

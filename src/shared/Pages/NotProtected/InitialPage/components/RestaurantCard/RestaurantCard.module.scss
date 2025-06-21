@@ -1,0 +1,52 @@
+.container_card {
+  width: 300px;
+  border:none;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.container {
+  display: flex;
+  column-gap: 12px;
+  max-width: 300px;
+}
+
+.info_container {
+  padding-top: 0.75rem;
+  font-weight: 600;
+  color: #3e3e3e;
+  flex: 1; // ocupa o espaço restante do flex
+  min-width: 0; // importante para que o ellipsis funcione dentro de flex
+}
+
+.name {
+  display: block; // importante!
+  max-width: 180px; // ou ajuste conforme o layout
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rating_container {
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+}
+
+.rating {
+  font-size: 1rem;
+}
+
+.modal {
+  min-height: 40vh;
+}
+
+.modal_content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem
+}
