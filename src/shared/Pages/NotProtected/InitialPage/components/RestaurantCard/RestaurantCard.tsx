@@ -31,7 +31,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
         {restaurant && (
           <div className={styles.container}>
             <Image
-              src={restaurant.image}
+              className={styles.restaurant_image} src={restaurant.image}
               alt={restaurant.name}
               width={80}
               height={80}
