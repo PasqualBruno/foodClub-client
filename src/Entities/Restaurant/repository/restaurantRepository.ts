@@ -12,6 +12,7 @@ const restaurantRepository = {
       throw error
     }
   },
+
 }
 
 export default restaurantRepository

@@ -26,6 +26,8 @@ export interface IRestaurant {
   cnpj: string;
   number: string;
   image: string;
+  averageRating?: number;
+  restaurantRatings?: IDishRating[]
 
 }
 

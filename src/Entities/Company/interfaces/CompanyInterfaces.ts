@@ -6,6 +6,7 @@ export interface ICompany {
   number: string;
   userId: number
   image?: string
+  restaurantId: number
 }
 
 
