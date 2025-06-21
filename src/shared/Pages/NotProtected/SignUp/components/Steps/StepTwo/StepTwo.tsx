@@ -1,12 +1,13 @@
 import { Form, Input } from "antd";
 import TextContainer from "../../TextContainer/TextContainer";
 import type { IStepProps } from "../../../interfaces/Signup";
+import { validateEmailExists } from "../../../utils/validateEmailExists";
 
-export default function StepTwo({ formData, } : IStepProps) {
-  const userType = formData.userType || 'company'; // Default to "Empresa" if not set
+export default function StepTwo({ formData }: IStepProps) {
+  const userType = formData.userType || 'company';
 
   return (
-    <Form.Item>
+    <>
       <TextContainer
         title={userType === "restaurant" ? "Restaurante" : "Empresa"}
         subtitle="Informações da conta"
@@ -17,9 +18,11 @@ export default function StepTwo({ formData, } : IStepProps) {
         label="Email"
         labelCol={{ span: 24 }}
         name="email"
+        validateTrigger="onBlur"
         rules={[
           { required: true, message: 'Por favor, insira seu email' },
-          { type: 'email', message: 'Email inválido' }
+          { type: 'email', message: 'Email inválido' },
+          { validator: validateEmailExists }
         ]}
         hasFeedback
       >
@@ -61,6 +64,6 @@ export default function StepTwo({ formData, } : IStepProps) {
       >
         <Input.Password size="large" />
       </Form.Item>
-    </Form.Item>
+    </>
   );
 }

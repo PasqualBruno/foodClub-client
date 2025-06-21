@@ -7,7 +7,6 @@ import type { IStepProps } from "../../../interfaces/Signup";
 import { useState } from "react";
 
 export default function StepOne({ formData }: IStepProps) {
-  //const value = formData.userType || "company";
   const [value, setValue] = useState(formData.userType || "company");
 
   return (
