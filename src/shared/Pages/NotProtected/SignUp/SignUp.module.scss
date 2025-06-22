@@ -1,0 +1,121 @@
+.signupContainer {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+
+  .signupForm {
+    flex: 1;
+    padding: 40px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+
+    .ant-tabs {
+      .ant-tabs-tab-btn {
+        color: #302F2F;
+
+        &:hover {
+          color: #7D0000;
+        }
+      }
+
+      .ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+          color: #7D0000;
+
+          &:hover {
+            color: #7D0000;
+          }
+        }
+      }
+
+      .ant-tabs-ink-bar {
+        background-color: #7D0000;
+      }
+    }
+
+    .signupButtons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+
+      .backButton {
+        background: #f0f0f0;
+
+        &:hover {
+          background: #7D0000;
+          color: #fff;
+          border-color: #7D0000;
+        }
+      }
+
+      .signupButton {
+        background: #7D0000;
+        color: #fff;
+
+        &:hover {
+          background: #f0f0f0;
+          color: #7D0000;
+          border-color: #7D0000;
+        }
+      }
+    }
+  }
+
+  .signupTabs {
+    :global(.ant-tabs-tab-btn) {
+      color: #302f2f;
+      transition: all 0.3s;
+
+
+      &:hover {
+        color: #7D0000;
+      }
+    }
+
+    :global(.ant-tabs-tab-active .ant-tabs-tab-btn){
+      color: #7D0000;
+
+      &:hover {
+        color: #7D0000;
+      }
+    }
+
+    :global(.ant-tabs-ink-bar) {
+      background-color: #7D0000;
+    }
+  }
+
+
+  .progressButtonsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .signupImage {
+    flex: 2;
+    background: #f9f4f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 90%;
+      height: 80vh;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .signupImage {
+      display: none;
+    }
+
+    .signupForm {
+      flex: none;
+      width: 100%;
+      padding: 24px;
+    }
+  }
+}

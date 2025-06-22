@@ -1,4 +1,3 @@
-
 export interface ICompany {
   cep: string;
   cnpj: string;
