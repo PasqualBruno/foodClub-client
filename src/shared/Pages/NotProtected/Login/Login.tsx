@@ -5,7 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { useRestaurantStore } from '@/Entities/Restaurant/store/RestaurantStore'
 import { useCompanyStore } from '@/Entities/Company/store/CompanyStore'
 import { useEmployeeStore } from '@/Entities/Employee/store/EmployeeStore'
-import { UserType } from '../../../interfaces/sharedInterfaces'
+import { UserType, type IUser } from '../../../interfaces/sharedInterfaces'
+import { useAuthStore } from '@/shared/store/AuthStore'
+import type { IRestaurantBasicInfo } from '@/Entities/Restaurant/interfaces/RestaurantInterfaces'
+import type { ICompany } from '@/Entities/Company/interfaces/CompanyInterfaces'
+import type { IEmployee } from '@/Entities/Employee/interfaces/employeeInterfaces'
 
 const Login = () => {
   const { message } = App.useApp()
@@ -13,31 +17,45 @@ const Login = () => {
   const { setRestaurant } = useRestaurantStore()
   const { setEmployee } = useEmployeeStore()
   const { setCompany } = useCompanyStore()
+  const { updateUser } = useAuthStore()
 
   const onFinish = async (values: { email: string; password: string }) => {
     try {
       const response = await authRepository.login(values.email, values.password)
       const userData = response.userDetails
-      const userType: UserType = userData.dataValues.userType
-      const commonProps = { userType }
 
-      const actions = {
-        [UserType.Restaurant]: () =>
-          setRestaurant({ ...userData.restaurant, ...commonProps }),
-
-        [UserType.Employee]: () =>
-          setEmployee({ ...userData.employee, image: userData.employee.image || '', ...commonProps }),
-
-        [UserType.Company]: () =>
-          setCompany({ ...userData.company, image: userData.company.image || '', ...commonProps })
+      const user: IUser = {
+        userType: userData.userType,
+        id:
+          userData.userType === UserType.Restaurant
+            ? userData.restaurant.id
+            : userData.userType === UserType.Company
+              ? userData.company.id
+              : userData.userType === UserType.Employee
+                ? userData.employee.id
+                : undefined,
+        name: userData.name,
+        image: userData.profileImage,
       }
 
-      actions[userType]?.()
 
+      if (user.id) {
+        setRestaurant({} as IRestaurantBasicInfo)
+        setCompany({} as ICompany)
+        setEmployee({} as IEmployee)
+
+
+        if (user.userType === UserType.Restaurant) setRestaurant(userData.restaurant)
+        if (user.userType === UserType.Company) setCompany(userData.company)
+        if (user.userType === UserType.Employee) setEmployee(userData.employee)
+      }
+
+      updateUser(user)
       localStorage.setItem('foodClubToken', response.token)
       message.success('Login realizado com sucesso!')
       navigate('/inicio')
     } catch (error: any) {
+      console.log(error)
       message.error('Falha no login. ' + error.response?.data.message)
     }
   }

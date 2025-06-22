@@ -29,11 +29,9 @@ const authRepository = {
   register: async (data: { userType: string; email: string; password: string }) => {
     try {
       const response = await axios.post(`${apiUrl}/user`, data)
-      console.log('Cadastro realizado com sucesso:', response)
       return response
     } catch (error) {
       console.error('Erro ao cadastrar:', error)
-      console.log('Dados enviados:', data)
       throw error
     }
   },
