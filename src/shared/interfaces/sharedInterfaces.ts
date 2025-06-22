@@ -1,5 +1,3 @@
-import image from "antd/es/image"
-
 export const UserType = {
   Company: 'company',
   Restaurant: 'restaurant',
@@ -7,10 +5,3 @@ export const UserType = {
 } as const
 
 export type UserType = (typeof UserType)[keyof typeof UserType]
-
-export interface IUser {
-  id: number | undefined
-  name: string
-  userType: UserType | undefined
-  image: string
-}

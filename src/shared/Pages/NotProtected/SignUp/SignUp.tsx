@@ -1,161 +1,98 @@
-import { Button, Flex, Form, Progress, Tabs, message } from "antd";
-import { useState } from "react";
-import StepOne from "./components/Steps/StepOne/StepOne";
-import StepTwo from "./components/Steps/StepTwo/StepTwo";
-import StepThree from "./components/Steps/StepThree/StepThree";
-import StepFour from "./components/Steps/StepFour/StepFour";
-import StepFive from "./components/Steps/StepFive/StepFive";
-import signupImage from "../../../../assets/SignUp/girl-background.svg";
-import styles from "./SignUp.module.scss";
-import type { RegisterPayload } from "./interfaces/Signup";
-import { useSignUp } from "./hooks/useSignUp";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import { App, Button, Card, Form, Input, Select } from 'antd'
+import { useNavigate } from 'react-router-dom'
+import authRepository from '../../../repositories/auth/authRepository' // ajuste o caminho se necessário
 
+const { Option } = Select
 
+const SignUp = () => {
+  const { message } = App.useApp()
+  const navigate = useNavigate()
 
-export default function SignUp() {
-  const navigate = useNavigate();
-
-  const [currentStep, setCurrentStep] = useState(1);
-
-  const [formData, setFormData] = useState<RegisterPayload>({
-    userType: "company",
-    name: "",
-    email: "",
-    password: "",
-    cnpj: "",
-    profileImage: "",
-    company: {
-      name: "",
-      cep: "",
-      number: "",
-    },
-  });
-
-  const { register, isLoading } = useSignUp();
-  const isLastStep = currentStep === 5;
-  const progress = Math.round((currentStep / 5) * 100);
-  const labels = ["Tipo", "Conta", "Dados", "Logo", "Finalização"];
-
-  const handleValuesChange = (_: any, allValues: any) => {
-    const { userType, name, email, password, cnpj, cep, number } = allValues;
-    const entity = { name, cep, number };
-    const profileImage = formData.profileImage || "";
-
-    const payload: RegisterPayload =
-      userType === "restaurant"
-        ? {
-            userType,
-            name,
-            email,
-            password,
-            cnpj,
-            profileImage,
-            restaurant: entity,
-          }
-        : {
-            userType,
-            name,
-            email,
-            password,
-            cnpj,
-            profileImage,
-            company: entity,
-          };
-
-    setFormData(payload);
-  };
-
-  const handleImageChange = (image: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      profileImage: image,
-    }));
-  };
-
-  const handleFinish = async () => {
+  const onFinish = async (values: { userType: string; email: string; password: string }) => {
     try {
-      await register(formData);
-      message.success("Cadastro realizado com sucesso!");
-      navigate('/entrar')
-    } catch {
-      message.error("Erro ao cadastrar. Verifique os dados.");
+      const response = await authRepository.register(values)
+      console.log(response)
+      if (response.status === 201) {
+        message.success('Cadastro realizado com sucesso!')
+        navigate('/entrar')
+      }
+    } catch (error: any) {
+      message.error('Erro ao cadastrar: ' + error.response?.data?.message || error.message)
     }
-  };
+  }
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo)
+  }
 
   return (
-    <div className={styles.signupContainer}>
-      <Form
-        className={styles.signupForm}
-        initialValues={{ userType: "company" }}
-        onValuesChange={handleValuesChange}
-      >
-        <Tabs
-          className={styles.signupTabs}
-          activeKey={String(currentStep)}
-          onChange={(key) => setCurrentStep(Number(key))}
-          centered
-          items={Array.from({ length: 5 }).map((_, i) => {
-            const id = String(i + 1);
-            const stepProps = { formData };
+    <div style={styles.container}>
+      <Card title="Cadastro" style={styles.card}>
+        <Form
+          name="signup"
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            name="userType"
+            label="Tipo de Usuário"
+            rules={[{ required: true, message: 'Por favor, selecione o tipo de usuário!' }]}
+          >
+            <Select placeholder="Selecione o tipo">
+              <Option value="company">Empresa</Option>
+              <Option value="restaurant">Restaurante</Option>
+              <Option value="employee">Funcionário</Option>
+            </Select>
+          </Form.Item>
 
-            const content =
-              id === "1" ? (
-                <StepOne {...stepProps} />
-              ) : id === "2" ? (
-                <StepTwo {...stepProps} />
-              ) : id === "3" ? (
-                <StepThree {...stepProps} />
-              ) : id === "4" ? (
-                <StepFour {...stepProps} onImageChange={handleImageChange} />
-              ) : (
-                <StepFive {...stepProps} />
-              );
+          <Form.Item
+            name="email"
+            label="E-mail"
+            rules={[
+              { required: true, message: 'Por favor, insira seu e-mail!' },
+              { type: 'email', message: 'E-mail inválido!' },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-            return { label: labels[i], key: id, children: content };
-          })}
-        />
+          <Form.Item
+            name="password"
+            label="Senha"
+            rules={[{ required: true, message: 'Por favor, insira sua senha!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
 
-        <Flex className={styles.progressButtonsContainer} gap="small" vertical>
-          <div className={styles.signupButtons}>
-            {currentStep > 1 && (
-              <Button
-                type="default"
-                className={styles.backButton}
-                onClick={() =>
-                  setCurrentStep((prev) => Math.max(prev - 1, 1))
-                }
-              >
-                Voltar
-              </Button>
-            )}
-
-            <Button
-              type="primary"
-              className={styles.signupButton}
-              loading={isLoading}
-              htmlType="button"
-              onClick={
-                isLastStep
-                  ? handleFinish
-                  : () => setCurrentStep((prev) => Math.min(prev + 1, 5))
-              }
-            >
-              {isLastStep ? "Finalizar" : "Próximo"}
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Cadastrar
             </Button>
-          </div>
-
-          <Progress
-            strokeColor="#7D0000"
-            percent={progress}
-            showInfo={false}
-          />
-        </Flex>
-      </Form>
-
-      <div className={styles.signupImage}>
-        <img src={signupImage} alt="Imagem de Cadastro" />
-      </div>
-    </div>
-  );
+          </Form.Item>
+          <Form.Item>
+            <Button type='dashed' onClick={() => navigate('/entrar')} block>
+              Entrar
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </div >
+  )
 }
+
+const styles: { [key: string]: React.CSSProperties } = {
+  container: {
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f2f5',
+  },
+  card: {
+    width: 400,
+  },
+}
+
+export default SignUp

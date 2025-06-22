@@ -1,4 +1,3 @@
-import { IDish } from './RestaurantInterfaces';
 import type { UserType } from "@/shared/interfaces/sharedInterfaces";
 
 export interface IDish {
@@ -9,15 +8,6 @@ export interface IDish {
   image: string;
   averageRating: number;
   ratings: IDishRating[];
-  id: number
-}
-
-export interface IDishBasicInfo {
-  restaurantId: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
 }
 
 
@@ -36,8 +26,6 @@ export interface IRestaurant {
   cnpj: string;
   number: string;
   image: string;
-  averageRating?: number;
-  restaurantRatings?: IDishRating[]
 
 }
 

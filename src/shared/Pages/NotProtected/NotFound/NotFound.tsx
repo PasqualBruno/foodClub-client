@@ -1,24 +1,22 @@
-// PageNotFound.tsx
-
 import { useNavigate } from 'react-router-dom';
-import styles from './NotFound.module.scss';
+import './NotFound.scss';
 
 const PageNotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.container}>
+    <div className="page-not-found">
       <img
         src="/assets/undraw_page-not-found_6wni.svg"
         alt="Página não encontrada"
-        className={styles.image}
+        className="page-not-found__image"
       />
-      <h1 className={styles.title}>Ops! Página não encontrada.</h1>
-      <p className={styles.text}>
+      <h1 className="page-not-found__title">Ops! Página não encontrada.</h1>
+      <p className="page-not-found__text">
         Parece que você tentou acessar uma página que não existe.
       </p>
       <button
-        className={styles.button}
+        className="page-not-found__button"
         onClick={() => navigate('/entrar')}
       >
         Ir para Login
