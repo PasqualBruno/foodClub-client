@@ -8,6 +8,7 @@ export interface IEmployee {
   name: string;
   userId: number
   image?: string
+  vacation: boolean
 }
 
 export interface IEmployeeBasicInfo extends IEmployee {

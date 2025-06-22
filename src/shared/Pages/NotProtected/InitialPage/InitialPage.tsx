@@ -1,19 +1,44 @@
-
+// InitialPage.tsx
 import { useRestaurantStore } from "@/Entities/Restaurant/store/RestaurantStore"
 import { useEffect } from "react"
-
+import Title from "antd/es/typography/Title"
+import RestaurantCard from "./components/RestaurantCard/RestaurantCard"
+import { App, Card } from "antd"
+import styles from './InitialPage.module.scss'
+import RestaurantCardLoading from "./components/RestaurantCard/RestaurantCardLoading"
 
 const InitialPage = () => {
-
-  const { getRestaurants } = useRestaurantStore()
+  const { message } = App.useApp()
+  const { getRestaurants, restaurants, loading } = useRestaurantStore()
 
   useEffect(() => {
-    getRestaurants()
-  }, [getRestaurants])
+    const fetchRestaurants = async () => {
+      try {
+        await getRestaurants()
+      } catch (error) {
+        message.error("Erro ao carregar restaurantes. Tente novamente mais tarde.")
+      }
+    }
 
+    fetchRestaurants()
+  }, [getRestaurants, message])
 
   return (
-    <div>InitialPage</div>
+    <div>
+      <h1 >Restaurantes</h1>
+      <Card style={{ border: 'none' }}>
+        <div className={styles.restaurantes_container}>
+          {loading
+            ? Array(3).fill(null).map((_, index) => (
+              <RestaurantCardLoading key={index} />
+            ))
+            : restaurants.map((restaurant) => (
+              <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+            ))
+          }
+        </div>
+      </Card>
+    </div>
   )
 }
 
