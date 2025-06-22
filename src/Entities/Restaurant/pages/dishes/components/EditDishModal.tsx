@@ -19,7 +19,7 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
         name: dish.name,
         price: dish.price,
         image: dish.image,
-        description: dish.description, // ✅ Adicionado aqui
+        description: dish.description,
       })
     }
   }, [visible, dish, form])
@@ -33,9 +33,9 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
           name: values.name,
           price: values.price,
           image: values.image,
-          description: values.description, // ✅ Adicionado aqui também
+          description: values.description,
         })
-        message.success('Prato editado com sucesso!')
+        // message.success('Prato editado com sucesso!')
       })
       .catch(() => { })
   }
@@ -43,7 +43,7 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
   return (
     <Modal
       title={`Editar prato: ${dish.name}`}
-      visible={visible}
+      open={visible}
       onCancel={onCancel}
       onOk={handleOk}
       okText="Salvar"
@@ -64,8 +64,11 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
         >
           <InputNumber
             min={0}
+            step={0.01}
             style={{ width: '100%' }}
-            formatter={value => `R$ ${value}`}
+            placeholder="Ex: 19.90"
+            formatter={value => `R$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+            parser={value => value?.replace(/[^0-9,.-]+/g, '').replace(',', '.') ?? ''}
           />
         </Form.Item>
 
@@ -80,7 +83,7 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
         <Form.Item
           label="Descrição"
           name="description"
-          rules={[{ required: true, message: 'Por favor, informe a descrição' }]} // ✅ Validação básica
+          rules={[{ required: true, message: 'Por favor, informe a descrição' }]}
         >
           <Input.TextArea rows={4} />
         </Form.Item>

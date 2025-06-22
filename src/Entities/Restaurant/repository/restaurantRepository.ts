@@ -37,6 +37,7 @@ const restaurantRepository = {
 
   updateDish: async (dishId: number, data: Partial<IDish>) => {
     try {
+      console.log({ data })
       const response = await axios.put(`${apiUrl}/Dish/${dishId}`, data)
       return response.data
     } catch (error) {
@@ -51,7 +52,6 @@ const restaurantRepository = {
       // const response = await axios.get(`${apiUrl}/Order/by-restaurant/${restaurantId}`)
       // return response.data
       return mockCompanyOrders
-
     } catch (error) {
       console.error('Erro ao buscar pedidos:', error)
       throw error
@@ -89,7 +89,17 @@ const restaurantRepository = {
       console.error('Erro ao atualizar pedido da empresa:', error)
       throw error
     }
-  }
+  },
+
+  createDish: async (data: Partial<IDish>) => {
+    try {
+      const response = await axios.post(`${apiUrl}/Dish`, data)
+      return response.data
+    } catch (error) {
+      console.error('Erro ao criar prato:', error)
+      throw error
+    }
+  },
 
 
 

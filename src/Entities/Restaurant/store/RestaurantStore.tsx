@@ -18,7 +18,7 @@ interface IRestaurantStore {
   updateDish: (dishId: number, data: Partial<IDish>) => void
   updateEmployeeOrder: (orderId: number, data: Partial<IEmployeeOrder>) => void
   updateCompanyOrder: (orderId: number, data: Partial<ICompanyOrder>) => void
-
+  createDish: (data: Partial<IDish>) => void
 
 }
 
@@ -57,7 +57,9 @@ export const useRestaurantStore = create<IRestaurantStore>((set) => ({
     try {
       set({ loading: true })
       const data = await restaurantRepository.deleteDish(dishId)
-      set({ dishes: data, loading: false })
+      console.log({ data })
+
+      // set({ dishes: data, loading: false })
     } catch (error) {
       set({ loading: false })
       throw error
@@ -68,7 +70,6 @@ export const useRestaurantStore = create<IRestaurantStore>((set) => ({
       set({ loading: true })
       const response = await restaurantRepository.updateDish(dishId, data)
       console.log({ respostaUpdate: response })
-      set({ dishes: response, loading: false })
     } catch (error) {
       set({ loading: false })
       throw error
@@ -102,6 +103,16 @@ export const useRestaurantStore = create<IRestaurantStore>((set) => ({
       set({ loading: true })
       const response = await restaurantRepository.updateCompanyOrder(orderId, data)
       set({ companyOrders: response, loading: false })
+    } catch (error) {
+      set({ loading: false })
+      throw error
+    }
+  },
+
+  createDish: async (data) => {
+    try {
+      set({ loading: true })
+      await restaurantRepository.createDish(data)
     } catch (error) {
       set({ loading: false })
       throw error

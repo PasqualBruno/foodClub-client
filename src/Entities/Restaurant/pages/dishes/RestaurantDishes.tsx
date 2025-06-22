@@ -7,13 +7,24 @@ import { useRestaurantStore } from '../../store/RestaurantStore'
 import EditDishModal from './components/EditDishModal'
 
 const RestaurantDishes = () => {
-  const { restaurant, getDishes, dishes, deleteDish, updateDish, addDish } = useRestaurantStore()
+  const {
+    restaurant,
+    getDishes,
+    dishes = [],
+    deleteDish,
+    updateDish,
+  } = useRestaurantStore()
+
   const { message, modal } = App.useApp()
+
   const navigate = useNavigate()
 
   const [editingDish, setEditingDish] = useState<IDish | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+
+  const { createDish } = useRestaurantStore()
+
 
   useEffect(() => {
     async function fetchDishes() {
@@ -44,6 +55,7 @@ const RestaurantDishes = () => {
         try {
           await deleteDish(dishId)
           message.success('Prato excluído com sucesso!')
+          if (restaurant?.id) await getDishes(restaurant.id)
         } catch {
           message.error('Erro ao excluir prato.')
         }
@@ -57,10 +69,19 @@ const RestaurantDishes = () => {
   }
 
   const handleSave = async (updatedDish: IDish) => {
-    console.log(updatedDish)
+    const { id, name, price, image, description } = updatedDish
+
+    const newValuesToUpdate = {
+      name,
+      price,
+      image,
+      description,
+    }
+
     try {
-      await updateDish(updatedDish.id, updatedDish)
-      message.success('Prato atualizado com sucesso!')
+      await updateDish(id, newValuesToUpdate)
+      if (!restaurant) return
+      getDishes(restaurant.id)
       setModalOpen(false)
       setEditingDish(null)
 
@@ -90,7 +111,7 @@ const RestaurantDishes = () => {
 
   const handleAddSave = async (newDishData: IDish) => {
     try {
-      await addDish(newDishData)
+      await createDish(newDishData)
       message.success('Prato adicionado com sucesso!')
       setIsAddModalOpen(false)
       setEditingDish(null)
@@ -118,14 +139,14 @@ const RestaurantDishes = () => {
       >
         <Table<IDish>
           columns={columns}
-          dataSource={dishes}
+          dataSource={dishes || []}
           rowKey="id"
           pagination={{ pageSize: 6 }}
           className="custom-table"
         />
       </Card>
 
-      {/* Modal edição */}
+      {/* Modal de edição */}
       {editingDish && modalOpen && (
         <EditDishModal
           visible={modalOpen}
@@ -138,6 +159,7 @@ const RestaurantDishes = () => {
         />
       )}
 
+      {/* Modal de adição */}
       {editingDish && isAddModalOpen && (
         <EditDishModal
           visible={isAddModalOpen}

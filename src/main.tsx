@@ -7,6 +7,7 @@ import { App as AntdApp, ConfigProvider } from 'antd';
 import ptBR from 'antd/locale/pt_BR';
 
 import AppRoutes from './routes/AppRoutes';
+import '@ant-design/v5-patch-for-react-19';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
