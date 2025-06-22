@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Progress, Tabs, message } from "antd";
+import { App, Button, Flex, Form, Progress, Tabs } from "antd";
 import { useState } from "react";
 import StepOne from "./components/Steps/StepOne/StepOne";
 import StepTwo from "./components/Steps/StepTwo/StepTwo";
@@ -11,9 +11,8 @@ import type { RegisterPayload } from "./interfaces/Signup";
 import { useSignUp } from "./hooks/useSignUp";
 import { useNavigate } from "react-router-dom";
 
-
-
 export default function SignUp() {
+  const { message } = App.useApp(); // ✅ Aqui está a correção
   const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -77,8 +76,12 @@ export default function SignUp() {
     try {
       await register(formData);
       message.success("Cadastro realizado com sucesso!");
-      navigate('/entrar')
-    } catch {
+
+      setTimeout(() => {
+        navigate("/entrar");
+      }, 1500);
+    } catch (error) {
+      console.error(error);
       message.error("Erro ao cadastrar. Verifique os dados.");
     }
   };
