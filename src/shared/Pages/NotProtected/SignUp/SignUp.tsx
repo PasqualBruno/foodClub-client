@@ -10,6 +10,7 @@ import styles from "./SignUp.module.scss";
 import type { RegisterPayload } from "./interfaces/Signup";
 import { useSignUp } from "./hooks/useSignUp";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr";
 
 export default function SignUp() {
   const { message } = App.useApp(); // ✅ Aqui está a correção
@@ -88,6 +89,15 @@ export default function SignUp() {
 
   return (
     <div className={styles.signupContainer}>
+      <Button
+        type="text"
+        icon={<ArrowLeftIcon className={styles.icon} weight="regular" />}
+        onClick={() => navigate("/entrar")}
+        className={styles.backToLogin}
+      >
+
+      </Button>
+
       <Form
         className={styles.signupForm}
         initialValues={{ userType: "company" }}
