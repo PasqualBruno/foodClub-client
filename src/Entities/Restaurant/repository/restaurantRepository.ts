@@ -46,7 +46,7 @@ const restaurantRepository = {
     }
   },
 
-  getCompanyOrders: async (restaurantId: number) => {
+  getCompanyOrders: async () => {
     //TODO -- Integrar com o back
     try {
       // const response = await axios.get(`${apiUrl}/Order/by-restaurant/${restaurantId}`)

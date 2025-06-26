@@ -39,7 +39,8 @@ function RestaurantOrders() {
   function handleStatusChange(orderId: number, newStatus: string) {
     try {
       const updatedOrders = companyOrders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
+        // AQUI: Asserção de tipo para informar ao TypeScript que o status é válido
+        order.id === orderId ? { ...order, status: newStatus as ICompanyOrder['status'] } : order
       )
       useRestaurantStore.setState({ companyOrders: updatedOrders })
       message.success('Status atualizado com sucesso.')
@@ -85,15 +86,12 @@ function RestaurantOrders() {
     }
   }
 
-  // Função auxiliar de espera
   function wait(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
 
-
   async function handleEmployeeSelectionChange(
     selectedKeys: React.Key[],
-    selectedRows: IEmployeeOrder[]
   ) {
     const previouslySelected = new Set(selectedRowKeys)
     const currentlySelected = new Set(selectedKeys)
@@ -187,10 +185,13 @@ function RestaurantOrders() {
       dataIndex: 'status',
       key: 'status',
       render(status: string, record) {
+        // AQUI: Mapeamento de cores para todos os status possíveis
         const color = {
-          Preparando: 'blue',
-          Entregue: 'green',
-          Cancelado: 'red',
+          'Preparando': 'blue',
+          'Entregue': 'green',
+          'Cancelado': 'red',
+          'Enviado': 'purple',
+          'Procurando Entregador': 'orange',
         }[status] || 'default'
 
         return editingStatusId === record.id ? (
@@ -199,8 +200,11 @@ function RestaurantOrders() {
             style={{ minWidth: 120 }}
             onChange={(value) => handleStatusChange(record.id, value)}
             onBlur={() => setEditingStatusId(null)}
+            // AQUI: Opções do Select agora incluem todos os status
             options={[
               { label: 'Preparando', value: 'Preparando' },
+              { label: 'Procurando Entregador', value: 'Procurando Entregador' },
+              { label: 'Enviado', value: 'Enviado' },
               { label: 'Entregue', value: 'Entregue' },
               { label: 'Cancelado', value: 'Cancelado' },
             ]}

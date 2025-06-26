@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { Layout, Menu, Image } from 'antd'
+import { Layout, Menu, Image, type MenuProps } from 'antd'
 import {
   BowlSteamIcon,
   BuildingOfficeIcon,
@@ -54,7 +54,7 @@ const AppLayout = () => {
       label: 'Pedidos',
       icon: <ListBulletsIcon size={24} />,
     },
-  ].filter(Boolean)
+  ].filter(Boolean) as MenuProps['items']
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

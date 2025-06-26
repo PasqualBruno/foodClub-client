@@ -3,17 +3,16 @@ import { useEffect } from "react";
 import TextContainer from "../../TextContainer/TextContainer";
 import type { IStepProps } from "../../../interfaces/Signup";
 import { getAddressByCep } from "../../../utils/getAdressByCep";
-import { debounce } from "lodash";
 import { maskCNPJ, maskCEP } from "../../../utils/masks";
 import { validateCnpjExists } from "../../../utils/validateCnpjExists"; // ✅ função reutilizada
+import { debounce } from "lodash";
 
 export default function StepThree({ formData }: IStepProps) {
   const form = Form.useFormInstance();
   const userType = formData.userType || "company";
 
-  const subtitle = `Informações ${
-    userType === "restaurant" ? "do restaurante" : "da empresa"
-  }`;
+  const subtitle = `Informações ${userType === "restaurant" ? "do restaurante" : "da empresa"
+    }`;
 
   // 🏠 Preenche endereço ao digitar o CEP
   const handleCepChange = debounce(async (cep: string) => {
