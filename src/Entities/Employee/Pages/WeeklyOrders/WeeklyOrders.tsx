@@ -1,4 +1,4 @@
-import { Card, Modal, List, Typography, Button, Space, Image, Avatar, App } from 'antd'
+import { Card, Modal, List, Typography, Button, Image, Avatar, App } from 'antd'
 import styles from './WeeklyOrders.module.scss'
 import { useAuthStore } from '@/shared/store/AuthStore'
 import { useEffect, useState } from 'react'
@@ -7,7 +7,7 @@ import { useCompanyStore } from '@/Entities/Company/store/CompanyStore'
 import { useEmployeeStore } from '../../store/EmployeeStore'
 import { useRestaurantStore } from '@/Entities/Restaurant/store/RestaurantStore'
 import { ForkKnifeIcon, PlusCircleIcon } from '@phosphor-icons/react'
-import type { IDish } from '@/Entities/Restaurant/interfaces/restaurantInterfaces'
+import type { IDish } from '@/Entities/Restaurant/interfaces/RestaurantInterfaces'
 
 const { Title, Text } = Typography
 

@@ -1,6 +1,6 @@
-import { Modal, Form, Input, InputNumber, App } from 'antd'
+import { Modal, Form, Input, InputNumber } from 'antd'
 import type { IDish } from '@/Entities/Restaurant/interfaces/RestaurantInterfaces'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 type EditDishModalProps = {
   visible: boolean
@@ -11,7 +11,6 @@ type EditDishModalProps = {
 
 const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) => {
   const [form] = Form.useForm()
-  const { message } = App.useApp()
 
   useEffect(() => {
     if (visible) {
@@ -69,13 +68,13 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
             { type: 'number', min: 0.01, message: 'O preço deve ser maior que R$ 0,00' },
           ]}
         >
-          <InputNumber
+          <InputNumber<number>
             min={0}
             step={0.01}
             style={{ width: '100%' }}
             placeholder="Ex: 19.90"
             formatter={value => `R$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-            parser={value => value?.replace(/[^0-9,.-]+/g, '').replace(',', '.') ?? ''}
+            parser={value => Number(value?.replace(/[^0-9,.-]+/g, '').replace(',', '.') ?? 0)}
           />
         </Form.Item>
 

@@ -41,6 +41,8 @@ export interface IRestaurant {
   image: string;
   averageRating?: number;
   restaurantRatings?: IDishRating[]
+  profileImage: string
+  ratingCount: number
 
 }
 
