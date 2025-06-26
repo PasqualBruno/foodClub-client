@@ -8,6 +8,7 @@ import { useEmployeeStore } from '../../store/EmployeeStore'
 import { useRestaurantStore } from '@/Entities/Restaurant/store/RestaurantStore'
 import { ForkKnifeIcon, PlusCircleIcon } from '@phosphor-icons/react'
 import type { IDish } from '@/Entities/Restaurant/interfaces/RestaurantInterfaces'
+import type { IWeeklyOrder } from '@/Entities/Employee/interfaces/employeeInterfaces'
 
 const { Title, Text } = Typography
 
@@ -26,8 +27,6 @@ const WeeklyOrders = () => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
   const [selectedDishes, setSelectedDishes] = useState<SelectedDishes>({})
 
-  console.log({ employee })
-
   const daysMap = {
     Monday: 'Segunda-feira',
     Tuesday: 'Terça-feira',
@@ -35,7 +34,6 @@ const WeeklyOrders = () => {
     Thursday: 'Quinta-feira',
     Friday: 'Sexta-feira',
   } as const
-
 
   const daysOfWeekKeys = Object.keys(daysMap) as (keyof typeof daysMap)[]
 
@@ -79,29 +77,29 @@ const WeeklyOrders = () => {
     }
 
     try {
-      // Dispara a função para criar o pedido semanal
-      await createWeeklyOrder({
-        employeeId: user.id!,
+      const payload: Partial<IWeeklyOrder> = {
+        employeeId: user.id,
         dayOfWeek: selectedDay,
         order: {
           dishId: dish.id,
-          quantity: 1, // Assumindo quantidade 1
+          quantity: 1,
         }
-      })
+      };
 
-      // Se a criação for bem-sucedida, atualiza o estado local
+      await createWeeklyOrder(payload as IWeeklyOrder);
+
       setSelectedDishes((prev) => ({
         ...prev,
         [selectedDay]: dish,
-      }))
-      message.success(`Prato "${dish.name}" selecionado para ${daysMap[selectedDay as keyof typeof daysMap]}.`)
+      }));
+      message.success(`Prato "${dish.name}" selecionado para ${daysMap[selectedDay as keyof typeof daysMap]}.`);
     } catch (error) {
-      console.error("Erro ao criar pedido semanal:", error)
-      message.error("Erro ao selecionar o prato. Tente novamente.")
+      console.error("Erro ao criar pedido semanal:", error);
+      message.error("Erro ao selecionar o prato. Tente novamente.");
     }
 
-    setIsModalVisible(false)
-  }
+    setIsModalVisible(false);
+  };
 
   const handleRemoveDish = (dayKey: string) => {
     setSelectedDishes((prev) => ({
