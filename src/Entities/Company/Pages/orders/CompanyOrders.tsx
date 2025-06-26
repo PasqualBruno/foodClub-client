@@ -84,7 +84,7 @@ const CompanyOrders = () => {
         </div>
         <Table
           columns={columns}
-          dataSource={companyEmployees}
+          dataSource={companyEmployees!}
           rowKey="id"
           pagination={false}
         />

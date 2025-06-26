@@ -1,6 +1,6 @@
-import { Modal, Form, Input, InputNumber, App } from 'antd'
+import { Modal, Form, Input, InputNumber } from 'antd'
 import type { IDish } from '@/Entities/Restaurant/interfaces/RestaurantInterfaces'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 type EditDishModalProps = {
   visible: boolean
@@ -11,7 +11,6 @@ type EditDishModalProps = {
 
 const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) => {
   const [form] = Form.useForm()
-  const { message } = App.useApp()
 
   useEffect(() => {
     if (visible) {
