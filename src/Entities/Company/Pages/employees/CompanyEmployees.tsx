@@ -14,9 +14,9 @@ import {
 } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import {
-  PencilSimple,
-  TrashSimple,
-  UserCircle,
+  PencilSimpleIcon,
+  TrashSimpleIcon,
+  UserCircleIcon,
 } from "@phosphor-icons/react"
 import 'antd/dist/reset.css'
 import type { IEmployee } from "@/Entities/Employee/interfaces/employeeInterfaces"
@@ -74,7 +74,7 @@ const CompanyEmployees = () => {
         try {
           await deleteEmployee(employee.id)
           message.success("Funcionário excluído com sucesso!")
-          getEmployeeByCompany(user.id)
+          getEmployeeByCompany(user.id!)
         } catch (err) {
           message.error("Erro ao excluir funcionário")
         }
@@ -114,11 +114,11 @@ const CompanyEmployees = () => {
           image: values.image,
         }
 
-        await createEmployee(payload, user.id)
+        await createEmployee(payload, user.id!)
         message.success("Funcionário cadastrado com sucesso!")
       }
 
-      getEmployeeByCompany(user.id)
+      getEmployeeByCompany(user.id!)
       setIsModalVisible(false)
       form.resetFields()
     } catch (error) {
@@ -136,7 +136,7 @@ const CompanyEmployees = () => {
         image ? (
           <Avatar src={image} />
         ) : (
-          <Avatar icon={<UserCircle size={24} />} />
+          <Avatar icon={<UserCircleIcon size={24} />} />
         ),
     },
     {
@@ -161,7 +161,7 @@ const CompanyEmployees = () => {
         <Space>
           <Button
             type="text"
-            icon={<PencilSimple size={20} />}
+            icon={<PencilSimpleIcon size={20} />}
             onClick={() => showEditModal(record)}
           >
             Editar
@@ -169,7 +169,7 @@ const CompanyEmployees = () => {
           <Button
             type="text"
             danger
-            icon={<TrashSimple size={20} />}
+            icon={<TrashSimpleIcon size={20} />}
             onClick={() => showDeleteConfirm(record)}
           >
             Excluir
@@ -269,7 +269,7 @@ const CompanyEmployees = () => {
             hasFeedback
             rules={[
               { required: true, message: "A data de nascimento é obrigatória" },
-              ({ getFieldValue }) => ({
+              () => ({
                 validator(_, value) {
                   if (!value) {
                     return Promise.resolve()

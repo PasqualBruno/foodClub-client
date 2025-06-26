@@ -1,4 +1,3 @@
-import { IDish } from './RestaurantInterfaces';
 import type { UserType } from "@/shared/interfaces/sharedInterfaces";
 
 export interface IDish {
