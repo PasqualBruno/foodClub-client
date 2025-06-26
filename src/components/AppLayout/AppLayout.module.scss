@@ -1,50 +1,3 @@
-.user_container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 16px;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-}
-
-.user_name {
-  font-weight: 600;
-  color: white;
-  width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.user_image {
-  background-size: cover;
-  background-position: center;
-}
-
-.menu {
-  background-color: #a8071a;
-
-  .ant-menu-item,
-  .ant-menu-submenu-title {
-    color: white !important;
-    font-weight: 600;
-  }
-
-  .ant-menu-item-icon {
-    color: white !important;
-  }
-
-  .ant-menu-item-selected {
-    background-color: #871010 !important;
-    color: white !important;
-  }
-
-  .ant-menu-item:hover {
-    background-color: #871010 !important;
-    color: white !important;
-  }
-}
-
 .sider {
   background: #a8071a;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
@@ -61,6 +14,75 @@
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
+}
+
+.user_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.user_image_wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 12px;
+  /* Removendo o background-color: white; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user_image_wrapper:hover {
+  transform: scale(1.05);
+}
+
+.user_image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* A imagem irá cobrir o contêiner, cortando o que não couber */
+}
+
+.user_name {
+  font-weight: 600;
+  color: white;
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.menu {
+  background-color: #a8071a;
+}
+
+.menu .ant-menu-item,
+.menu .ant-menu-submenu-title {
+  color: white !important;
+  font-weight: 600;
+}
+
+.menu .ant-menu-item-icon {
+  color: white !important;
+}
+
+.menu .ant-menu-item-selected {
+  background-color: #871010 !important;
+  color: white !important;
+}
+
+.menu .ant-menu-item:hover {
+  background-color: #871010 !important;
+  color: white !important;
 }
 
 .footer_container {

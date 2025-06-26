@@ -12,7 +12,8 @@ import { useAuthStore } from '@/shared/store/AuthStore';
 import RestaurantOrders from '@/Entities/Restaurant/pages/orders/RestaurantOrders';
 import CompanyEmployees from '@/Entities/Company/Pages/employees/CompanyEmployees';
 import CompanyOrders from '@/Entities/Company/Pages/orders/CompanyOrders';
-import CardapioDisponivel from '@/Entities/Employee/Pages/CardapioDisponivel';
+import CardapioDisponivel from '@/Entities/Employee/Pages/Cardapio/CardapioDisponivel';
+import WeeklyOrders from '@/Entities/Employee/Pages/WeeklyOrders/WeeklyOrders';
 
 const AppRoutes = () => {
 
@@ -36,6 +37,7 @@ const AppRoutes = () => {
         <Route element={<AppLayout />}>
           {/* Company  */}
           {user.userType === 'company' && <Route path="/funcionarios" element={<CompanyEmployees />} />}
+          {user.userType === 'employee' && <Route path="/pedidos-semanais" element={<WeeklyOrders />} />}
           {(user.userType === 'employee' || user.userType === 'company') && <Route path="/cardapioselecionado" element={<CardapioDisponivel />} />}
 
           <Route path="/inicio" element={<InitialPage />} />

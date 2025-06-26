@@ -1,0 +1,73 @@
+.container {
+  padding: 24px;
+}
+
+.cards_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.day_card {
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: #1890ff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.no_dish_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  color: #999;
+  
+  .icon {
+    color: #ccc;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    margin: 10px 0;
+    color: #666;
+  }
+}
+
+.selected_dish_content {
+
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 10px;
+}
+
+.dish_image {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover; /* Esta propriedade é a chave */
+}
+
+.dish_info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.dish_list_item {
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: #f0f2f5;
+  }
+}

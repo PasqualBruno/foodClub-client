@@ -1,4 +1,4 @@
-import type { IEmployee } from "@/Entities/Employee/interfaces/employeeInterfaces"
+import type { IEmployee, IWeeklyOrder } from "@/Entities/Employee/interfaces/employeeInterfaces"
 import axios from "axios"
 
 const api = import.meta.env.VITE_API_URL
@@ -48,6 +48,16 @@ const employeeRepository = {
   createEmployee: async (data: Partial<IEmployee>, companyId: number) => {
     try {
       const response = await axios.post(`${api}/user`, { ...data, companyId })
+      return response.data
+    } catch (error) {
+      console.error('Erro ao criar funcionário:', error)
+      throw error
+    }
+  },
+
+  createWeeklyOrder: async (data: IWeeklyOrder) => {
+    try {
+      const response = await axios.post(`${api}/employee-weekly-orders`, data)
       return response.data
     } catch (error) {
       console.error('Erro ao criar funcionário:', error)

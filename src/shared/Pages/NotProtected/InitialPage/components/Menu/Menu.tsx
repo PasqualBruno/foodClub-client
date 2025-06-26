@@ -27,9 +27,7 @@ const Menu = ({ restaurant }: MenuProps) => {
     }
 
     fetchDishes()
-  }, [restaurant])
-
-  console.log(restaurant)
+  }, [restaurant, getDishes, message])
 
   const cheaperDish = useMemo(() => {
     if (dishes.length === 0) return null
@@ -43,14 +41,16 @@ const Menu = ({ restaurant }: MenuProps) => {
     <div className={styles.menu_container}>
       <Card className={styles.menu_card} size='small'>
         <div className={styles.menu_header}>
-          <Image
-            className={styles.restaurant_image}
-            src={restaurant.image || 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='}
-            alt={restaurant.name}
-            width={120}
-            height={120}
-            preview={false}
-          />
+          <div className={styles.restaurant_image_wrapper}>
+            <Image
+              className={styles.restaurant_image}
+              src={restaurant.profileImage || 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='}
+              alt={restaurant.name}
+              width={120}
+              height={120}
+              preview={false}
+            />
+          </div>
           <div className={styles.info_container}>
             <p className={styles.name}>{restaurant.name}</p>
 
@@ -74,12 +74,10 @@ const Menu = ({ restaurant }: MenuProps) => {
                     <Tag color="#50a773" className={styles.price_value}>
                       R$ {cheaperDish.price}
                     </Tag>
-
                   </div>
                 )}
               </div>
             </div>
-
           </div>
         </div>
       </Card >
@@ -101,7 +99,6 @@ const Menu = ({ restaurant }: MenuProps) => {
           ))
         }
       </div>
-
     </div >
   )
 }

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useCompanyStore } from "@/Entities/Company/store/CompanyStore"
 import { useAuthStore } from "@/shared/store/AuthStore"
-import { useEmployeeStore } from "../store/EmployeeStore"
+import { useEmployeeStore } from "../../store/EmployeeStore"
 import { UserType } from "@/shared/interfaces/sharedInterfaces"
 import { useRestaurantStore } from "@/Entities/Restaurant/store/RestaurantStore"
 import DishCardMenu from "@/shared/Pages/NotProtected/InitialPage/components/DishCardMenu/DishCardMenu"
