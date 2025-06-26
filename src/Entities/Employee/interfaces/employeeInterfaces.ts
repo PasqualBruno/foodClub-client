@@ -1,3 +1,4 @@
+import type { IDish } from "@/Entities/Restaurant/interfaces/RestaurantInterfaces";
 import type { UserType } from "@/shared/interfaces/sharedInterfaces";
 
 export interface IEmployee {
@@ -26,3 +27,13 @@ export interface IEmployeeBasicInfo extends IEmployee {
 
 }
 
+
+export interface IWeeklyOrder {
+  employeeId: number,
+  dayOfWeek: string,
+  dish: IDish,
+  order: {
+    dishId: number,
+    quantity: number
+  }
+}
