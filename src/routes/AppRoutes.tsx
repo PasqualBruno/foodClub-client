@@ -11,6 +11,8 @@ import RestaurantDishes from '@/Entities/Restaurant/pages/dishes/RestaurantDishe
 import { useAuthStore } from '@/shared/store/AuthStore';
 import RestaurantOrders from '@/Entities/Restaurant/pages/orders/RestaurantOrders';
 import CompanyEmployees from '@/Entities/Company/Pages/employees/CompanyEmployees';
+import CompanyOrders from '@/Entities/Company/Pages/orders/CompanyOrders';
+import CardapioDisponivel from '@/Entities/Employee/Pages/CardapioDisponivel';
 
 const AppRoutes = () => {
 
@@ -34,10 +36,11 @@ const AppRoutes = () => {
         <Route element={<AppLayout />}>
           {/* Company  */}
           {user.userType === 'company' && <Route path="/funcionarios" element={<CompanyEmployees />} />}
+          {(user.userType === 'employee' || user.userType === 'company') && <Route path="/cardapioselecionado" element={<CardapioDisponivel />} />}
 
           <Route path="/inicio" element={<InitialPage />} />
           {restaurant?.name && <Route path="/pratos" element={<RestaurantDishes />} />}
-          <Route path="/pedidos" element={user.userType === 'company' ? <InitialPage /> : <RestaurantOrders />} />
+          <Route path="/pedidos" element={user.userType === 'company' ? <CompanyOrders /> : <RestaurantOrders />} />
         </Route>
       </Route>
     </Routes>

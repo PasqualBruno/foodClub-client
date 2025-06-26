@@ -4,7 +4,7 @@ import dishRepository from "../repository/dishRepository"
 
 interface IDishStore {
   dishes: IDish[]
-  getDishes: () => void
+  getDishes: (restaurantId: number) => void
   loading: boolean
 }
 
@@ -12,10 +12,10 @@ interface IDishStore {
 export const useDishStore = create<IDishStore>((set) => ({
   loading: false,
   dishes: [],
-  getDishes: async () => {
+  getDishes: async (restaurantId) => {
     try {
       set({ loading: true })
-      const data = await dishRepository.getDishesByRestaurant(1)
+      const data = await dishRepository.getDishesByRestaurant(restaurantId)
       set({ dishes: data, loading: false })
     } catch (error) {
       set({ loading: false })

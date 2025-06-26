@@ -167,7 +167,7 @@ function RestaurantOrders() {
       render(price: number) {
         return (
           <Tag color="green" style={{ minWidth: 80, textAlign: 'center' }}>
-            R$ {price.toFixed(2)}
+            R$ {price}
           </Tag>
         )
       },
@@ -311,7 +311,7 @@ function RestaurantOrders() {
               render(price) {
                 return (
                   <Tag color="green" style={{ minWidth: 80, textAlign: 'center' }}>
-                    R$ {price.toFixed(2)}
+                    R$ {price}
                   </Tag>
                 )
               },

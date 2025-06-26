@@ -1,7 +1,6 @@
 // InitialPage.tsx
 import { useRestaurantStore } from "@/Entities/Restaurant/store/RestaurantStore"
 import { useEffect } from "react"
-import Title from "antd/es/typography/Title"
 import RestaurantCard from "./components/RestaurantCard/RestaurantCard"
 import { App, Card } from "antd"
 import styles from './InitialPage.module.scss'
