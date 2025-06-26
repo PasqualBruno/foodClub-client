@@ -8,5 +8,21 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src')
     }
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          antd: ['antd']
+        }
+      }
+    }
+  },
+  server: {
+    port: 3000,
+    host: true
   }
 })
