@@ -63,7 +63,19 @@ const employeeRepository = {
       console.error('Erro ao criar funcionário:', error)
       throw error
     }
-  }
+  },
+
+  getWeeklyOrdersByEmployee: async (id: number) => {
+    try {
+      const response = await axios.get(`${api}/employee-weekly-orders/employee/${id}`)
+      return response.data
+    } catch (error) {
+      console.error('Erro ao buscar pedidos semanais do funcionário:', error)
+      throw error
+    }
+  },
+
+
 }
 
 export default employeeRepository
