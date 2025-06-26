@@ -1,5 +1,3 @@
-import image from "antd/es/image"
-
 export const UserType = {
   Company: 'company',
   Restaurant: 'restaurant',
