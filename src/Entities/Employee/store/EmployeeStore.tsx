@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import type { IEmployee } from "../interfaces/employeeInterfaces";
-import employeeRepository from "@/Entities/Company/repository/employeeRepository";
+import type { IEmployee, IWeeklyOrder } from "../interfaces/employeeInterfaces";
+import employeeRepository from "@/Entities/Employee/repository/employeeRepository";
+
 
 interface IEmployeeStore {
   employee: IEmployee | null;
@@ -10,6 +11,7 @@ interface IEmployeeStore {
   deleteEmployee: (id: number) => Promise<void>;
   updateEmployee: (id: number, data: Partial<IEmployee>) => Promise<IEmployee>;
   createEmployee: (data: Partial<IEmployee>, companyId: number) => Promise<IEmployee>;
+  createWeeklyOrder: (data: IWeeklyOrder) => Promise<IWeeklyOrder>;
 }
 
 export const useEmployeeStore = create<IEmployeeStore>((set) => ({
@@ -54,7 +56,17 @@ export const useEmployeeStore = create<IEmployeeStore>((set) => ({
 
   createEmployee: async (data: Partial<IEmployee>) => {
     try {
-      const response = await employeeRepository.createEmployee(data);
+      const response = await employeeRepository.createEmployee(data, data.companyId!);
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.error("Erro ao criar funcionário:", error);
+      throw error;
+    }
+  },
+  createWeeklyOrder: async (data: IWeeklyOrder) => {
+    try {
+      const response = await employeeRepository.createWeeklyOrder(data);
       console.log(response);
       return response;
     } catch (error) {

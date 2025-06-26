@@ -7,6 +7,7 @@ import {
   ForkKnifeIcon,
   HouseIcon,
   ListBulletsIcon,
+  RepeatIcon,
   SignOutIcon,
   Users,
   UsersThreeIcon,
@@ -28,25 +29,26 @@ const AppLayout = () => {
 
   const menuItems = [
     { key: '/inicio', label: 'Início', icon: <HouseIcon size={24} /> },
-
     restaurant?.name && {
       key: '/pratos',
       label: 'Pratos',
       icon: <BowlSteamIcon size={24} />,
     },
-
     user?.userType !== UserType.Restaurant && {
       key: '/cardapioselecionado',
       label: 'Cardápio',
       icon: <ForkKnifeIcon size={24} />,
     },
-
+    user?.userType === UserType.Employee && {
+      key: '/pedidos-semanais',
+      label: 'Pedidos Semanais',
+      icon: <RepeatIcon size={24} />,
+    },
     user?.userType === UserType.Company && {
       key: '/funcionarios',
       label: 'Funcionários',
       icon: <UsersThreeIcon size={24} />,
     },
-
     (user?.userType === UserType.Restaurant || user?.userType === UserType.Company) && {
       key: '/pedidos',
       label: 'Pedidos',
@@ -66,18 +68,16 @@ const AppLayout = () => {
         className={styles.sider}
       >
         <div className={styles.sider_inner}>
-          {/* Usuário */}
           <div>
             <div className={styles.user_container}>
-              <Image
-                className={styles.user_image}
-                src={user?.image || 'https://media.tenor.com/mCs02aeuB50AAAAe/beluga-cat-meme-discord.png'}
-                width={40}
-                height={40}
-                preview={false}
-                style={{ borderRadius: '50%' }}
-                fallback="https://cbx-prod.b-cdn.net/COLOURBOX65474531.jpg?width=800&height=800&quality=70"
-              />
+              <div className={styles.user_image_wrapper}>
+                <Image
+                  className={styles.user_image}
+                  src={user?.image || 'https://media.tenor.com/mCs02aeuB50AAAAe/beluga-cat-meme-discord.png'}
+                  preview={false}
+                  fallback="https://cbx-prod.b-cdn.net/COLOURBOX65474531.jpg?width=800&height=800&quality=70"
+                />
+              </div>
               <p className={styles.user_name}>{user?.name}</p>
             </div>
 
@@ -89,7 +89,6 @@ const AppLayout = () => {
             />
           </div>
 
-          {/* Logout e tipo de usuário */}
           <div>
             <Menu
               theme="dark"

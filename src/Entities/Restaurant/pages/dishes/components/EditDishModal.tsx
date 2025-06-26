@@ -35,7 +35,6 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
           image: values.image,
           description: values.description,
         })
-        // message.success('Prato editado com sucesso!')
       })
       .catch(() => { })
   }
@@ -48,11 +47,15 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
       onOk={handleOk}
       okText="Salvar"
     >
-      <Form form={form} layout="vertical" name="editDishForm">
+      <Form form={form} layout="vertical" name="editDishForm" validateTrigger="onChange">
         <Form.Item
           label="Nome"
           name="name"
-          rules={[{ required: true, message: 'Por favor, informe o nome do prato' }]}
+          hasFeedback
+          rules={[
+            { required: true, message: 'O nome é obrigatório' },
+            { min: 3, message: 'O nome deve ter no mínimo 3 letras' },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -60,7 +63,11 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
         <Form.Item
           label="Preço"
           name="price"
-          rules={[{ required: true, message: 'Por favor, informe o preço' }]}
+          hasFeedback
+          rules={[
+            { required: true, message: 'O preço é obrigatório' },
+            { type: 'number', min: 0.01, message: 'O preço deve ser maior que R$ 0,00' },
+          ]}
         >
           <InputNumber
             min={0}
@@ -75,7 +82,11 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
         <Form.Item
           label="URL da imagem"
           name="image"
-          rules={[{ required: true, message: 'Por favor, informe a URL da imagem' }]}
+          hasFeedback
+          rules={[
+            { required: true, message: 'A URL da imagem é obrigatória' },
+            { type: 'url', message: 'A URL informada não é válida' },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -83,7 +94,10 @@ const EditDishModal = ({ visible, dish, onCancel, onSave }: EditDishModalProps) 
         <Form.Item
           label="Descrição"
           name="description"
-          rules={[{ required: true, message: 'Por favor, informe a descrição' }]}
+          hasFeedback
+          rules={[
+            { required: true, message: 'A descrição é obrigatória' },
+          ]}
         >
           <Input.TextArea rows={4} />
         </Form.Item>

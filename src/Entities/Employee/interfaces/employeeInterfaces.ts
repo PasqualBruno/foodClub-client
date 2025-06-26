@@ -11,7 +11,18 @@ export interface IEmployee {
   vacation: boolean
 }
 
+export interface IWeeklyOrder {
+  employeeId: number,
+  dayOfWeek: string,
+  order: {
+    dishId: number,
+    quantity: number
+  }
+
+}
+
 export interface IEmployeeBasicInfo extends IEmployee {
   userType: UserType
 
 }
+

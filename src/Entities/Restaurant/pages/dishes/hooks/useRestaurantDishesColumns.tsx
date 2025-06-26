@@ -12,7 +12,7 @@ const useRestaurantDishesColumns = (
       title: 'Imagem',
       dataIndex: 'image',
       key: 'image',
-      render: (src: string) => <Image src={src} width={64} height={64} alt="Imagem do prato" />,
+      render: (src: string) => <Image style={{ borderRadius: '8px' }} src={src} width={64} height={64} alt="Imagem do prato" />,
     },
     {
       title: 'Nome',
@@ -27,10 +27,15 @@ const useRestaurantDishesColumns = (
       sorter: (a, b) => a.price - b.price,
     },
     {
-      title: 'Avaliação',
+      title: 'Nota média',
       dataIndex: 'averageRating',
       key: 'averageRating',
-      render: (rating: number) => <Rate allowHalf disabled defaultValue={rating} />,
+      render: (rating: number) =>
+        rating > 0 ? (
+          <Rate allowHalf disabled defaultValue={rating} />
+        ) : (
+          <Typography.Text style={{ opacity: 0.6 }}>Sem avaliação</Typography.Text>
+        ),
       sorter: (a, b) => a.averageRating - b.averageRating,
     },
     {

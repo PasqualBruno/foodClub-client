@@ -54,7 +54,7 @@ const CompanyEmployees = () => {
     setEditingEmployee(employee)
     form.setFieldsValue({
       ...employee,
-      birthDate: employee.birthDate?.split("T")[0], // remove hora
+      birthDate: employee.birthDate?.split("T")[0],
     })
     setIsModalVisible(true)
   }
@@ -87,7 +87,6 @@ const CompanyEmployees = () => {
       const values = await form.validateFields()
 
       if (editingEmployee) {
-        // PUT
         const payload = {
           name: values.name,
           cpf: values.cpf,
@@ -99,7 +98,6 @@ const CompanyEmployees = () => {
         await updateEmployee(editingEmployee.id, payload)
         message.success("Funcionário atualizado com sucesso!")
       } else {
-        // POST
         const payload = {
           name: values.name,
           email: values.email,
@@ -205,11 +203,19 @@ const CompanyEmployees = () => {
         onOk={handleFormSubmit}
         okText={editingEmployee ? "Salvar Alterações" : "Cadastrar"}
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" validateTrigger="onChange">
           <Form.Item
             name="name"
             label="Nome"
-            rules={[{ required: true, message: "Insira o nome" }]}
+            hasFeedback
+            rules={[
+              { required: true, message: "O nome é obrigatório" },
+              { min: 3, message: "O nome deve ter no mínimo 3 caracteres" },
+              {
+                pattern: /^[a-zA-ZÀ-ÿ\s'-]+$/,
+                message: "O nome não pode conter números ou caracteres especiais",
+              },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -219,7 +225,11 @@ const CompanyEmployees = () => {
               <Form.Item
                 name="email"
                 label="E-mail"
-                rules={[{ required: true, message: "Insira o e-mail" }]}
+                hasFeedback
+                rules={[
+                  { required: true, message: "O e-mail é obrigatório" },
+                  { type: "email", message: "O e-mail não é válido" },
+                ]}
               >
                 <Input type="email" />
               </Form.Item>
@@ -227,7 +237,11 @@ const CompanyEmployees = () => {
               <Form.Item
                 name="password"
                 label="Senha"
-                rules={[{ required: true, message: "Insira a senha" }]}
+                hasFeedback
+                rules={[
+                  { required: true, message: "A senha é obrigatória" },
+                  { min: 8, message: "A senha deve ter no mínimo 8 caracteres" },
+                ]}
               >
                 <Input.Password />
               </Form.Item>
@@ -237,20 +251,42 @@ const CompanyEmployees = () => {
           <Form.Item
             name="cpf"
             label="CPF"
-            rules={[{ required: true, message: "Insira o CPF" }]}
+            hasFeedback
+            rules={[
+              { required: true, message: "O CPF é obrigatório" },
+              {
+                pattern: /^[0-9]{11}$/,
+                message: "O CPF deve conter exatamente 11 números",
+              },
+            ]}
           >
-            <Input />
+            <Input maxLength={11} />
           </Form.Item>
 
           <Form.Item
             name="birthDate"
             label="Data de Nascimento"
-            rules={[{ required: true, message: "Insira a data de nascimento" }]}
+            hasFeedback
+            rules={[
+              { required: true, message: "A data de nascimento é obrigatória" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value) {
+                    return Promise.resolve()
+                  }
+                  const year = parseInt(value.substring(0, 4), 10)
+                  if (year >= 1900 && year <= 2500) {
+                    return Promise.resolve()
+                  }
+                  return Promise.reject(new Error('O ano deve estar entre 1900 e 2500'))
+                },
+              }),
+            ]}
           >
             <Input type="date" />
           </Form.Item>
 
-          <Form.Item name="image" label="URL da Imagem">
+          <Form.Item name="image" label="URL da Imagem" hasFeedback>
             <Input />
           </Form.Item>
 
