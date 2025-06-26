@@ -23,7 +23,7 @@ const useRestaurantDishesColumns = (
       title: 'Preço',
       dataIndex: 'price',
       key: 'price',
-      render: (price: number) => <Tag color="green">R$ {price.toFixed(2)}</Tag>,
+      render: (price: number) => <Tag color="green">R$ {price}</Tag>,
       sorter: (a, b) => a.price - b.price,
     },
     {

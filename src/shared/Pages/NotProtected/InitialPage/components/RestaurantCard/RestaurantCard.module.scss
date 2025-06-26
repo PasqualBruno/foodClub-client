@@ -1,60 +1,91 @@
 .container_card {
-  width: 300px;
-  border:none;
-  transition: all 0.2s ease-in-out;
+  width: 100%;
+  max-width: 320px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 
   &:hover {
     cursor: pointer;
-     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
   }
 }
 
 .container {
   display: flex;
-  column-gap: 12px;
-  max-width: 300px;
+  gap: 12px;
+  align-items: center;
+}
+
+.restaurant_image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  border: 4px solid #fff;
+  object-fit: cover;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .info_container {
-  padding-top: 0.75rem;
-  font-weight: 600;
-  color: #3e3e3e;
-  flex: 1; // ocupa o espaço restante do flex
-  min-width: 0; // importante para que o ellipsis funcione dentro de flex
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
 }
 
 .name {
-  display: block; // importante!
-  max-width: 180px; // ou ajuste conforme o layout
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .rating_container {
   display: flex;
   align-items: center;
-  column-gap: 4px;
+  gap: 6px;
+  color: #777;
+  font-size: 14px;
+
+  p {
+    margin: 0;
+  };
+
+  svg {
+    margin-top: -1px;
+  }
 }
 
-.rating {
-  font-size: 1rem;
-}
+
 
 .modal {
   min-height: 40vh;
+
+  .ant-modal-body {
+    padding-top: 16px;
+  }
 }
 
+.rating_text{
+  color:black;
+  font-weight: bold;
+}
 .modal_content {
   display: flex;
   flex-direction: column;
-  row-gap: 1rem
-}
+  gap: 1rem;
+  font-size: 15px;
+  color: #444;
 
-.restaurant_image {
-  border: 5px solid white;
-  box-sizing: border-box;
-  display: block;
-  border-radius: 8px;
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
 }
-

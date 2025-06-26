@@ -26,6 +26,9 @@ export interface IDishRating {
   dishId: number;
   userId: number;
   rating: number;
+  name: string,
+  profileImage: string
+  description: string
 }
 
 export interface IRestaurant {

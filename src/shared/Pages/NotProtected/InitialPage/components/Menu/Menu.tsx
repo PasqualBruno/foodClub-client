@@ -19,7 +19,7 @@ const Menu = ({ restaurant }: MenuProps) => {
   useEffect(() => {
     const fetchDishes = async () => {
       try {
-        await getDishes()
+        await getDishes(restaurant.id)
       } catch (error: any) {
         message.error("Erro ao carregar pratos. Tente novamente mais tarde.")
         console.error("Erro ao carregar pratos:", error)
@@ -28,6 +28,8 @@ const Menu = ({ restaurant }: MenuProps) => {
 
     fetchDishes()
   }, [restaurant])
+
+  console.log(restaurant)
 
   const cheaperDish = useMemo(() => {
     if (dishes.length === 0) return null
@@ -43,7 +45,7 @@ const Menu = ({ restaurant }: MenuProps) => {
         <div className={styles.menu_header}>
           <Image
             className={styles.restaurant_image}
-            src={restaurant.image}
+            src={restaurant.image || 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ='}
             alt={restaurant.name}
             width={120}
             height={120}
@@ -57,7 +59,7 @@ const Menu = ({ restaurant }: MenuProps) => {
                 <div className={styles.rating_container}>
                   <Rate allowHalf defaultValue={2.5} />
                   <p className={styles.average_rating}>{restaurant.averageRating || 2.5}</p>
-                  <p className={styles.rating_count}>({restaurant?.restaurantRatings?.length || 0})</p>
+                  <p className={styles.rating_count}>({restaurant?.ratingCount || 0})</p>
                 </div>
               </div>
 
@@ -70,7 +72,7 @@ const Menu = ({ restaurant }: MenuProps) => {
                   <div className={styles.cheaper_dish_container}>
                     <p>Pratos a partir de</p>
                     <Tag color="#50a773" className={styles.price_value}>
-                      R$ {cheaperDish.price.toFixed(2)}
+                      R$ {cheaperDish.price}
                     </Tag>
 
                   </div>

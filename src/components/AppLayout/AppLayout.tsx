@@ -1,18 +1,17 @@
+import { useState } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { Layout, Menu, Image } from 'antd'
 import {
   BowlSteamIcon,
   BuildingOfficeIcon,
-  ForkKnife,
   ForkKnifeIcon,
   HouseIcon,
   ListBulletsIcon,
   SignOutIcon,
   Users,
-  UsersThree,
   UsersThreeIcon,
 } from '@phosphor-icons/react'
-import { Image, Layout, Menu } from 'antd'
-import { Outlet, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+
 import { useRestaurantStore } from '@/Entities/Restaurant/store/RestaurantStore'
 import { useAuthStore } from '@/shared/store/AuthStore'
 import { UserType } from '@/shared/interfaces/sharedInterfaces'
@@ -27,21 +26,32 @@ const AppLayout = () => {
   const { restaurant } = useRestaurantStore()
   const { user } = useAuthStore()
 
-
-
   const menuItems = [
     { key: '/inicio', label: 'Início', icon: <HouseIcon size={24} /> },
+
     restaurant?.name && {
       key: '/pratos',
       label: 'Pratos',
       icon: <BowlSteamIcon size={24} />,
     },
+
+    user?.userType !== UserType.Restaurant && {
+      key: '/cardapioselecionado',
+      label: 'Cardápio',
+      icon: <ForkKnifeIcon size={24} />,
+    },
+
     user?.userType === UserType.Company && {
       key: '/funcionarios',
       label: 'Funcionários',
       icon: <UsersThreeIcon size={24} />,
     },
-    { key: '/pedidos', label: 'Pedidos', icon: <ListBulletsIcon size={24} /> },
+
+    (user?.userType === UserType.Restaurant || user?.userType === UserType.Company) && {
+      key: '/pedidos',
+      label: 'Pedidos',
+      icon: <ListBulletsIcon size={24} />,
+    },
   ].filter(Boolean)
 
   return (
@@ -51,11 +61,12 @@ const AppLayout = () => {
         breakpoint="md"
         collapsedWidth={0}
         collapsible
-        className={styles.sider}
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
+        className={styles.sider}
       >
         <div className={styles.sider_inner}>
+          {/* Usuário */}
           <div>
             <div className={styles.user_container}>
               <Image
@@ -74,13 +85,14 @@ const AppLayout = () => {
               className={styles.menu}
               onClick={({ key }) => navigate(key)}
               items={menuItems}
-              theme='dark'
+              theme="dark"
             />
           </div>
 
+          {/* Logout e tipo de usuário */}
           <div>
             <Menu
-              theme='dark'
+              theme="dark"
               className={styles.menu}
               onClick={({ key }) => {
                 if (key === 'logout') {
@@ -98,24 +110,24 @@ const AppLayout = () => {
             />
 
             <div className={styles.footer_container}>
-              {user.userType === UserType.Company && (
+              {user?.userType === UserType.Company && (
                 <>
                   <BuildingOfficeIcon size={32} />
                   <p className={styles.restaurant_name}>Empresa afiliada</p>
                 </>
               )}
 
-              {user.userType === UserType.Restaurant && (
+              {user?.userType === UserType.Restaurant && (
                 <>
                   <ForkKnifeIcon size={32} />
-                  <p className={styles.restaurant_name}>{'Restaurante'}</p>
+                  <p className={styles.restaurant_name}>Restaurante</p>
                 </>
               )}
 
-              {user.userType === UserType.Employee && (
+              {user?.userType === UserType.Employee && (
                 <>
                   <Users size={32} />
-                  <p className={styles.restaurant_name}>{'Colaborador'}</p>
+                  <p className={styles.restaurant_name}>Colaborador</p>
                 </>
               )}
             </div>

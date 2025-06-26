@@ -44,7 +44,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
               </Typography.Text>
               <div className={styles.rating_container}>
                 <StarIcon color="#fcbb00" size={16} weight="fill" />
-                <p>5</p>
+                <p className={styles.rating_text}>{restaurant.averageRating}</p>
               </div>
             </div>
           </div>
